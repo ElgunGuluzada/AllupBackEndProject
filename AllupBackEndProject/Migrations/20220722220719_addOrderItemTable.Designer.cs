@@ -4,14 +4,16 @@ using AllupBackEndProject.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AllupBackEndProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220722220719_addOrderItemTable")]
+    partial class addOrderItemTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,31 +114,6 @@ namespace AllupBackEndProject.Migrations
                             Id = 2,
                             ImageUrl = "banner-2.png"
                         });
-                });
-
-            modelBuilder.Entity("AllupBackEndProject.Models.BasketItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("BasketItems");
                 });
 
             modelBuilder.Entity("AllupBackEndProject.Models.Brand", b =>
@@ -312,7 +289,7 @@ namespace AllupBackEndProject.Migrations
                             Id = 8,
                             ImageUrl = "category-10.jpg",
                             IsDeleted = false,
-                            Name = "Camera & Photo"
+                            Name = "Video Games"
                         },
                         new
                         {
@@ -397,41 +374,6 @@ namespace AllupBackEndProject.Migrations
                             IsDeleted = false,
                             Name = "TV Sticks ",
                             ParentId = 6
-                        },
-                        new
-                        {
-                            Id = 21,
-                            IsDeleted = false,
-                            Name = "Digital Cameras",
-                            ParentId = 8
-                        },
-                        new
-                        {
-                            Id = 22,
-                            IsDeleted = false,
-                            Name = "Camcorders",
-                            ParentId = 8
-                        },
-                        new
-                        {
-                            Id = 23,
-                            IsDeleted = false,
-                            Name = "Camera Drones",
-                            ParentId = 8
-                        },
-                        new
-                        {
-                            Id = 24,
-                            IsDeleted = false,
-                            Name = "Action Cameras",
-                            ParentId = 8
-                        },
-                        new
-                        {
-                            Id = 25,
-                            IsDeleted = false,
-                            Name = "Photo Studio Supplies",
-                            ParentId = 8
                         });
                 });
 
@@ -876,19 +818,6 @@ namespace AllupBackEndProject.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("AllupBackEndProject.Models.BasketItem", b =>
-                {
-                    b.HasOne("AllupBackEndProject.Models.AppUser", "AppUser")
-                        .WithMany("BasketItems")
-                        .HasForeignKey("AppUserId");
-
-                    b.HasOne("AllupBackEndProject.Models.Product", "Product")
-                        .WithMany("BasketItems")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("AllupBackEndProject.Models.Category", b =>
                 {
                     b.HasOne("AllupBackEndProject.Models.Category", "Parent")
@@ -912,7 +841,7 @@ namespace AllupBackEndProject.Migrations
                         .IsRequired();
 
                     b.HasOne("AllupBackEndProject.Models.Product", "Product")
-                        .WithMany("OrderItems")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

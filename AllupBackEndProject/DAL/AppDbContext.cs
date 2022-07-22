@@ -20,6 +20,9 @@ namespace AllupBackEndProject.DAL
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ProductTags> ProductTags { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<BasketItem> BasketItems { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -79,21 +82,21 @@ namespace AllupBackEndProject.DAL
                     Id = 1,
                     Name = "Laptop",
                     ImageUrl = "category-1.jpg",
-                    CreatedAt = System.DateTime.Now,
+                    CreatedAt = System.DateTime.ParseExact("Saturday, 23 July 2022 01:06:21.5829407", "dddd, dd MMMM yyyy HH:mm:ss.fffffff", null)
                 },
                 new Category
                 {
                     Id = 2,
                     Name = "Computer",
                     ImageUrl = "category-2.jpg",
-                    CreatedAt = System.DateTime.Now,
+                    CreatedAt = System.DateTime.ParseExact("Saturday, 23 July 2022 01:06:21.5839145", "dddd, dd MMMM yyyy HH:mm:ss.fffffff", null)
                 },
                 new Category
                 {
                     Id = 3,
                     Name = "Smartphone",
                     ImageUrl = "category-3.jpg",
-                    CreatedAt = System.DateTime.Now,
+                    CreatedAt = System.DateTime.ParseExact("Saturday, 23 July 2022 01:06:21.5839173", "dddd, dd MMMM yyyy HH:mm:ss.fffffff", null)
                 },
                 new Category
                 {
@@ -118,12 +121,12 @@ namespace AllupBackEndProject.DAL
                     Id = 7,
                     Name = "Accessories & Parts",
                     ImageUrl = "category-8.jpg",
-                    CreatedAt = System.DateTime.Now,
+                    CreatedAt = System.DateTime.ParseExact("Saturday, 23 July 2022 01:06:21.5839177", "dddd, dd MMMM yyyy HH:mm:ss.fffffff", null)
                 },
                 new Category
                 {
                     Id = 8,
-                    Name = "Video Games",
+                    Name = "Camera & Photo",
                     ImageUrl = "category-10.jpg"
                 },
                 new Category
@@ -167,6 +170,66 @@ namespace AllupBackEndProject.DAL
                     Id = 15,
                     Name = "Usb Memory Sticks",
                     ParentId = 7
+                },
+                new Category
+                {
+                    Id= 16,
+                    Name = "Televisions",
+                    ParentId= 6,
+                },
+                new Category
+                {
+                    Id = 17,
+                    Name = "TV Receivers",
+                    ParentId = 6,
+                },
+                new Category
+                {
+                    Id = 18,
+                    Name = "Projectors",
+                    ParentId = 6,
+                },
+                new Category
+                {
+                    Id = 19,
+                    Name = "Audio Amplifier Boards",
+                    ParentId = 6,
+                },
+                new Category
+                {
+                    Id = 20,
+                    Name = "TV Sticks ",
+                    ParentId = 6,
+                },
+                new Category
+                {
+                    Id=21,
+                    Name = "Digital Cameras",
+                    ParentId = 8
+                },
+                new Category
+                {
+                    Id=22,
+                    Name = "Camcorders",
+                    ParentId=8
+                },
+                new Category
+                {
+                    Id=23,
+                    Name = "Camera Drones",
+                    ParentId=8
+                },
+                new Category
+                {
+                    Id=24,
+                    Name = "Action Cameras",
+                    ParentId=8
+                },
+                new Category
+                {
+                    Id=25,
+                    Name = "Photo Studio Supplies",
+                    ParentId=8
                 }
            );
             modelBuilder.Entity<Tag>().HasData(

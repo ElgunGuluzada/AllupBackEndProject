@@ -22,5 +22,8 @@ namespace AllupBackEndProject.Models
 
         public List<ProductImage> ProductImages { get; set; }
         public List<ProductTags> ProductTags { get; set; }
+        public List<OrderItem> OrderItems { get; set; }
+        public List<BasketItem> BasketItems { get; set; }
+
     }
 }

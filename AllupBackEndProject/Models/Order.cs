@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AllupBackEndProject.Models
 {
@@ -12,7 +13,10 @@ namespace AllupBackEndProject.Models
         public OrderStatus OrderStatus { get; set; }
         public string AppUserId { get; set; }
         public AppUser AppUser { get; set; }
+
+        public List<OrderItem> OrderItems { get; set; }
     }
+
 
     public enum OrderStatus
     {
