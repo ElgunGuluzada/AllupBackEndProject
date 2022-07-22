@@ -1,9 +1,10 @@
 ﻿using AllupBackEndProject.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AllupBackEndProject.DAL
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -17,6 +18,8 @@ namespace AllupBackEndProject.DAL
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<ProductTags> ProductTags { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -126,44 +129,44 @@ namespace AllupBackEndProject.DAL
                 new Category
                 {
                     Id = 9,
-                    Name = "Accessories & Parts",
+                    Name = "Cables & Adapters",
                     ParentId = 7,
                 },
                 new Category
                 {
                     Id = 10,
-                    Name = "Cables & Adapters",
-                    ParentId = 9,
+                    Name = "Batteries",
+                    ParentId = 7,
                 },
                 new Category
                 {
                     Id = 11,
-                    Name = "Batteries",
-                    ParentId = 9,
+                    Name = "Chargers",
+                    ParentId = 7,
                 },
                 new Category
                 {
                     Id = 12,
-                    Name = "Chargers",
-                    ParentId = 9,
+                    Name = "Watches",
+                    ParentId = 7,
                 },
                 new Category
                 {
                     Id = 13,
-                    Name = "Chargers",
-                    ParentId = 9,
+                    Name = "Bags & Cases",
+                    ParentId = 7,
                 },
                 new Category
                 {
                     Id = 14,
-                    Name = "Bags & Cases",
-                    ParentId = 9,
+                    Name = "Electronic Cigarettes",
+                    ParentId = 7
                 },
                 new Category
                 {
                     Id = 15,
-                    Name = "Electronic Cigarettes",
-                    ParentId = 9
+                    Name = "UsbMemorySticks",
+                    ParentId = 7
                 }
            );
             modelBuilder.Entity<Tag>().HasData(
@@ -229,35 +232,39 @@ namespace AllupBackEndProject.DAL
                     Id=6,
                     Name="Norcold",
                     ImageUrl= "brand-6.jpg"
-                }
-           );
-            modelBuilder.Entity<Product>().HasData(
-                new Product
-                {
-                 Id=1,
-                 
                 },
-                new Product
+                new Brand
                 {
-
+                    Id = 7,
+                    Name="Apple"
                 }
            );
-            modelBuilder.Entity<ProductImage>().HasData(
-                new ProductImage
-                {
+           // modelBuilder.Entity<Product>().HasData(
+           //     new Product
+           //     {
+
+           //     },
+           //     new Product
+           //     {
+
+           //     }
+           //);
+           // modelBuilder.Entity<ProductImage>().HasData(
+           //     new ProductImage
+           //     {
                     
-                },
-                new ProductImage
-                {
+           //     },
+           //     new ProductImage
+           //     {
 
-                }
-           );
-            modelBuilder.Entity<ProductTags>().HasData(
-                new ProductTags
-                {
+           //     }
+           //);
+           // modelBuilder.Entity<ProductTags>().HasData(
+           //     new ProductTags
+           //     {
 
-                }
-           );
+           //     }
+           //);
             
         }
     }
