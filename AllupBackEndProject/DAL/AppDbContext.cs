@@ -116,7 +116,7 @@ namespace AllupBackEndProject.DAL
                 new Category
                 {
                     Id = 7,
-                    Name = "Accessories",
+                    Name = "Accessories & Parts",
                     ImageUrl = "category-8.jpg",
                     CreatedAt = System.DateTime.Now,
                 },
@@ -165,7 +165,7 @@ namespace AllupBackEndProject.DAL
                 new Category
                 {
                     Id = 15,
-                    Name = "UsbMemorySticks",
+                    Name = "Usb Memory Sticks",
                     ParentId = 7
                 }
            );
