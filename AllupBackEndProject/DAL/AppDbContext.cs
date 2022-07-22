@@ -19,7 +19,6 @@ namespace AllupBackEndProject.DAL
         public DbSet<ProductImage> ProductImages { get; set; }
 
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -253,6 +252,13 @@ namespace AllupBackEndProject.DAL
 
                 }
            );
+            modelBuilder.Entity<ProductTags>().HasData(
+                new ProductTags
+                {
+
+                }
+           );
+            
         }
     }
 }
