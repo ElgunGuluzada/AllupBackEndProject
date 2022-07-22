@@ -13,6 +13,8 @@ namespace AllupBackEndProject.DAL
         public DbSet<SliderContent> SliderContents { get; set; }
         public DbSet<Banner> Banners { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -160,7 +162,34 @@ namespace AllupBackEndProject.DAL
                     Name = "Electronic Cigarettes",
                     ParentId = 9
                 }
-           ); ;
+           );
+            modelBuilder.Entity<Tag>().HasData(
+                new Tag
+                {
+                    Id= 1,
+                    Name="Camera"
+                },
+                new Tag
+                {
+                    Id=2,
+                    Name="Drone"
+                },
+                new Tag
+                {
+                    Id=3,
+                    Name="Music"
+                },
+                new Tag
+                {
+                    Id=4,
+                    Name="Memory"
+                },
+                new Tag 
+                {
+                    Id=5,
+                    Name="Gaming"
+                }
+           );
         }
     }
 }

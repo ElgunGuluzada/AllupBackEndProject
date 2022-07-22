@@ -28,7 +28,6 @@ namespace AllupBackEndProject.Controllers
             homeVM.Banners=_context.Banners.ToList();
             //homeVM.Categories=_context.Categories.Where(c=>c.ImageUrl!=null).ToList();
             homeVM.Categories = await _context.Categories.ToListAsync();
-
             return View(homeVM);
         }
     }
