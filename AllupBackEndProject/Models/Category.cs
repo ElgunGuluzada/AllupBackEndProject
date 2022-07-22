@@ -9,5 +9,6 @@ namespace AllupBackEndProject.Models
         public Nullable<int> ParentId { get; set; }
         public Category Parent { get; set; }
         public List<Category> Children { get; set; }
+        public List<Product> Products { get; set; }
     }
 }

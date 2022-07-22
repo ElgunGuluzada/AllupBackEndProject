@@ -29,7 +29,8 @@ namespace AllupBackEndProject.Controllers
             homeVM.Categories = await _context.Categories.ToListAsync();
             homeVM.Tags= await _context.Tags.ToListAsync();
             homeVM.Brands= await _context.Brands.ToListAsync();
-
+            homeVM.Products= await _context.Products.ToListAsync();
+            homeVM.ProductImages=await _context.ProductImages.ToListAsync();
             return View(homeVM);
         }
     }

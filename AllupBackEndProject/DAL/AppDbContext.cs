@@ -16,6 +16,7 @@ namespace AllupBackEndProject.DAL
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
 
 
 
@@ -229,6 +230,27 @@ namespace AllupBackEndProject.DAL
                     Id=6,
                     Name="Norcold",
                     ImageUrl= "brand-6.jpg"
+                }
+           );
+            modelBuilder.Entity<Product>().HasData(
+                new Product
+                {
+                 Id=1,
+                 
+                },
+                new Product
+                {
+
+                }
+           );
+            modelBuilder.Entity<ProductImage>().HasData(
+                new ProductImage
+                {
+                    
+                },
+                new ProductImage
+                {
+
                 }
            );
         }
