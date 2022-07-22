@@ -10,5 +10,6 @@ namespace AllupBackEndProject.ViewModel
         public List<Banner> Banners { get; set; }
         public List<Category> Categories { get; set; }
         public List<Tag> Tags { get; set; }
+        public List<Brand> Brands { get; set; }
     }
 }

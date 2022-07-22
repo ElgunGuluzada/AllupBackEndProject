@@ -24,10 +24,12 @@ namespace AllupBackEndProject.Controllers
         public async Task<IActionResult> Index()
         {
             HomeVM homeVM = new HomeVM();
-            homeVM.SliderContents = _context.SliderContents.Include(s => s.Slider).ToList();
-            homeVM.Banners=_context.Banners.ToList();
-            //homeVM.Categories=_context.Categories.Where(c=>c.ImageUrl!=null).ToList();
+            homeVM.SliderContents = await _context.SliderContents.Include(s => s.Slider).ToListAsync();
+            homeVM.Banners=await _context.Banners.ToListAsync();
             homeVM.Categories = await _context.Categories.ToListAsync();
+            homeVM.Tags= await _context.Tags.ToListAsync();
+            homeVM.Brands= await _context.Brands.ToListAsync();
+
             return View(homeVM);
         }
     }

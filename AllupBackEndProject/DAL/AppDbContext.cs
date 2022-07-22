@@ -14,6 +14,7 @@ namespace AllupBackEndProject.DAL
         public DbSet<Banner> Banners { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Brand> Brands { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -188,6 +189,44 @@ namespace AllupBackEndProject.DAL
                 {
                     Id=5,
                     Name="Gaming"
+                }
+           );
+            modelBuilder.Entity<Brand>().HasData(
+                new Brand
+                {
+                    Id=1,
+                    Name="David Smith",
+                    ImageUrl= "brand-1.jpg"
+                },
+                new Brand
+                {
+                    Id=2,
+                    Name="Avant Garde",
+                    ImageUrl="brand-2.jpg",
+                },
+                new Brand
+                {
+                    Id=3,
+                    Name = "Climb The Mountain",
+                    ImageUrl = "brand-3.jpg",
+                },
+                new Brand
+                {
+                    Id=4,
+                    Name = "Ostrich Cafe",
+                    ImageUrl = "brand-4.jpg",
+                },
+                new Brand
+                {
+                    Id=5,
+                    Name="Golden",
+                    ImageUrl = "brand-5.jpg",
+                },
+                new Brand
+                {
+                    Id=6,
+                    Name="Norcold",
+                    ImageUrl= "brand-6.jpg"
                 }
            );
         }

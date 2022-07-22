@@ -1,6 +1,6 @@
 ﻿namespace AllupBackEndProject.Models
 {
-    public class Tag:BaseIdentity
+    public class Brand:BaseIdentity
     {
     }
 }
