@@ -34,16 +34,14 @@
     <div class="banner-area banner-bg">
         <div class="container-fluid custom-container">
             <div class="row">
-                <div class="col-md-6">
+              @foreach (var item in Model.Banners)
+              {
+                   <div class="col-md-6">
                     <div class="banner-image">
-                        <a href="shop-4-column.html"><img src="~/assets/images/banner-1.png" alt="banner"></a>
+                        <a href="shop-4-column.html"><img src="~/assets/images/@item.ImageUrl" alt="banner"></a>
                     </div> <!-- banner image -->
-                </div>
-                <div class="col-md-6">
-                    <div class="banner-image">
-                        <a href="shop-4-column.html"><img src="~/assets/images/banner-2.png" alt="banner"></a>
-                    </div> <!-- banner image -->
-                </div>
+                </div> 
+              }
             </div> <!-- row -->
         </div> <!-- container -->
     </div>

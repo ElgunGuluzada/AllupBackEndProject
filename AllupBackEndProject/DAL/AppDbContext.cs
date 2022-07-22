@@ -11,6 +11,8 @@ namespace AllupBackEndProject.DAL
         }
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<SliderContent> SliderContents { get; set; }
+        public DbSet<Banner> Banners { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,14 +45,26 @@ namespace AllupBackEndProject.DAL
               new SliderContent
               {
                   Id = 2,
-                  SliderId= 2,
+                  SliderId = 2,
                   Name = "Sony Bravia.",
                   Offer = "Save $120 when you buy",
                   Title = "4K HDR Smart TV 43",
                   Desc = "Explore and immerse in exciting 360 content with Fulldive’s all-in-one virtual reality platform"
 
               }
-          );
+             );
+            modelBuilder.Entity<Banner>().HasData(
+            new Banner
+            {
+                Id= 1,
+                ImageUrl= "banner-1.png"
+            },
+            new Banner
+            {
+                Id=2,
+                ImageUrl= "banner-2.png"
+            }
+             );
         }
     }
 }
