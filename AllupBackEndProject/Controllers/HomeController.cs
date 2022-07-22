@@ -21,13 +21,15 @@ namespace AllupBackEndProject.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             HomeVM homeVM = new HomeVM();
             homeVM.SliderContents = _context.SliderContents.Include(s => s.Slider).ToList();
             homeVM.Banners=_context.Banners.ToList();
+            //homeVM.Categories=_context.Categories.Where(c=>c.ImageUrl!=null).ToList();
+            homeVM.Categories = await _context.Categories.ToListAsync();
+
             return View(homeVM);
         }
-
     }
 }
