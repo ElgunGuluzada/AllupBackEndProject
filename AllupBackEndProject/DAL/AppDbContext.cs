@@ -15,6 +15,8 @@ namespace AllupBackEndProject.DAL
         public DbSet<Category> Categories { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Brand> Brands { get; set; }
+        public DbSet<Product> Products { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
