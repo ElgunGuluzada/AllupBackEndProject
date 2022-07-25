@@ -23,8 +23,6 @@ namespace AllupBackEndProject.DAL
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
 
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -39,7 +37,6 @@ namespace AllupBackEndProject.DAL
                 {
                     Id = 2,
                     ImageUrl = "slider-2.jpg"
-
                 }
             );
             modelBuilder.Entity<SliderContent>().HasData(
@@ -51,7 +48,6 @@ namespace AllupBackEndProject.DAL
                   Offer = "Save $120 when you buy",
                   Title = "2020 Virtual Reality",
                   Desc = "Explore and immerse in exciting 360 content with Fulldive’s all-in-one virtual reality platform"
-
               },
               new SliderContent
               {
@@ -61,7 +57,6 @@ namespace AllupBackEndProject.DAL
                   Offer = "Save $120 when you buy",
                   Title = "4K HDR Smart TV 43",
                   Desc = "Explore and immerse in exciting 360 content with Fulldive’s all-in-one virtual reality platform"
-
               }
              );
             modelBuilder.Entity<Banner>().HasData(
@@ -257,6 +252,11 @@ namespace AllupBackEndProject.DAL
                 {
                     Id=5,
                     Name="Gaming"
+                },
+                new Tag
+                {
+                    Id=6,
+                    Name = "Premium"
                 }
            );
             modelBuilder.Entity<Brand>().HasData(
@@ -299,36 +299,77 @@ namespace AllupBackEndProject.DAL
                 new Brand
                 {
                     Id = 7,
-                    Name="Apple"
+                    Name="Apple",
+                    ImageUrl="brand-7.png"
                 }
            );
-           // modelBuilder.Entity<Product>().HasData(
-           //     new Product
-           //     {
-
-           //     },
-           //     new Product
-           //     {
-
-           //     }
-           //);
-           // modelBuilder.Entity<ProductImage>().HasData(
-           //     new ProductImage
-           //     {
-                    
-           //     },
-           //     new ProductImage
-           //     {
-
-           //     }
-           //);
-           // modelBuilder.Entity<ProductTags>().HasData(
-           //     new ProductTags
-           //     {
-
-           //     }
-           //);
-            
+            modelBuilder.Entity<Product>().HasData(
+                new Product
+                {
+                    Id =1,
+                    Name = "Macbook Pro",
+                    NewArrival = true,
+                    BestSeller = true,
+                    BrandId = 7,
+                    CategoryId = 2,
+                    StockCount = 20,
+                    Price = 2000,
+                    DiscountPercent = 10,
+                    DiscountPrice = 1800,
+                    TaxPercent = 10,
+                    IsFeatured = true,
+                    IsDeleted = false,
+                    IsAvailability = true,
+                    IsSpecial = true,
+                    Desc = "This Model Is Special",
+                    CreatedAt = System.DateTime.ParseExact("Saturday, 23 July 2022 00:46:20.0311359", "dddd, dd MMMM yyyy HH:mm:ss.fffffff", null)
+                }
+           );
+            modelBuilder.Entity<ProductImage>().HasData(
+                new ProductImage
+                {
+                    Id = 1,
+                    ProductId = 1,
+                    ImageUrl = "special-product-21.jpg",
+                    IsMain = true,
+                },
+                new ProductImage
+                {
+                    Id = 2,
+                    ProductId = 1,
+                    ImageUrl = "special-product-18.jpg",
+                    IsMain = false,
+                },
+                new ProductImage
+                {
+                    Id = 3,
+                    ProductId = 1,
+                    ImageUrl = "special-product-19.jpg",
+                    IsMain = false,
+                },
+                new ProductImage
+                {
+                    Id = 4,
+                    ProductId = 1,
+                    ImageUrl = "special-product-20.jpg",
+                    IsMain = false,
+                },
+                new ProductImage
+                {
+                    Id = 5,
+                    ProductId = 1,
+                    ImageUrl = "special-product-22.jpg",
+                    IsMain = false,
+                }
+           );
+            modelBuilder.Entity<ProductTags>().HasData(
+                new ProductTags
+                {
+                Id =1,
+                ProductId=1,
+                TagId = 6,
+                }
+           );
         }
     }
 }

@@ -23,14 +23,29 @@ namespace AllupBackEndProject.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var products =await _context.Products.Include(p=>p.ProductImages).ToListAsync();
             HomeVM homeVM = new HomeVM();
             homeVM.SliderContents = await _context.SliderContents.Include(s => s.Slider).ToListAsync();
             homeVM.Banners=await _context.Banners.ToListAsync();
-            homeVM.Categories = await _context.Categories.ToListAsync();
-            homeVM.Tags= await _context.Tags.ToListAsync();
+            homeVM.Categories = await _context.Categories.Include(c=>c.Children).ToListAsync();
             homeVM.Brands= await _context.Brands.ToListAsync();
-            homeVM.Products= await _context.Products.ToListAsync();
-            homeVM.ProductImages=await _context.ProductImages.ToListAsync();
+            homeVM.Products= await _context.Products
+                .Include(p=>p.Category)
+                .Include(p=>p.Brand)
+                .Include(p=>p.ProductTags).ThenInclude(p=>p.Tag)
+                .Include(p=>p.ProductImages)
+                .ToListAsync();
+            homeVM.ProductImages=await _context.ProductImages.Include(i=>i.Product).ToListAsync();
+            var newProduct = products.Where(p=>p.NewArrival).ToList();
+            var isFeatured = products.Where(p=>p.IsFeatured).ToList();
+            var bestSeller = products.Where(p=>p.BestSeller).ToList();
+            var isMain = await _context.ProductImages.Where(i => i.IsMain).ToListAsync();
+
+            ViewBag.newProduct = newProduct;
+            ViewBag.isFeatured = isFeatured;
+            ViewBag.bestSeller = bestSeller;
+            ViewBag.isMain = isMain;
+            
             return View(homeVM);
         }
     }

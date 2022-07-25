@@ -4,14 +4,16 @@ using AllupBackEndProject.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AllupBackEndProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220723204620_addNewProduct")]
+    partial class addNewProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -518,12 +520,6 @@ namespace AllupBackEndProject.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Desc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("DiscountPercent")
-                        .HasColumnType("float");
-
                     b.Property<double>("DiscountPrice")
                         .HasColumnType("float");
 
@@ -537,9 +533,6 @@ namespace AllupBackEndProject.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsFeatured")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSpecial")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -578,14 +571,11 @@ namespace AllupBackEndProject.Migrations
                             BestSeller = true,
                             BrandId = 7,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2022, 7, 23, 0, 46, 20, 31, DateTimeKind.Unspecified).AddTicks(1359),
-                            Desc = "This Model Is Special",
-                            DiscountPercent = 10.0,
+                            CreatedAt = new DateTime(2022, 7, 24, 0, 46, 20, 31, DateTimeKind.Local).AddTicks(1359),
                             DiscountPrice = 1800.0,
-                            IsAvailability = true,
+                            IsAvailability = false,
                             IsDeleted = false,
                             IsFeatured = true,
-                            IsSpecial = true,
                             Name = "Macbook Pro",
                             NewArrival = true,
                             Price = 2000.0,
@@ -620,35 +610,35 @@ namespace AllupBackEndProject.Migrations
                         new
                         {
                             Id = 1,
-                            ImageUrl = "special-product-21.jpg",
+                            ImageUrl = "product-21.jpg",
                             IsMain = true,
                             ProductId = 1
                         },
                         new
                         {
                             Id = 2,
-                            ImageUrl = "special-product-18.jpg",
+                            ImageUrl = "product-18.jpg",
                             IsMain = false,
                             ProductId = 1
                         },
                         new
                         {
                             Id = 3,
-                            ImageUrl = "special-product-19.jpg",
+                            ImageUrl = "product-19.jpg",
                             IsMain = false,
                             ProductId = 1
                         },
                         new
                         {
                             Id = 4,
-                            ImageUrl = "special-product-20.jpg",
+                            ImageUrl = "product-20.jpg",
                             IsMain = false,
                             ProductId = 1
                         },
                         new
                         {
                             Id = 5,
-                            ImageUrl = "special-product-22.jpg",
+                            ImageUrl = "product-22.jpg",
                             IsMain = false,
                             ProductId = 1
                         });
