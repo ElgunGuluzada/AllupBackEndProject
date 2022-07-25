@@ -138,20 +138,29 @@
                 <div class="tab-pane fade show active" id="new" role="tabpanel" aria-labelledby="new-tab">
                     <div class="product-items">
                         <div class="row product-active">
-                            @foreach (var item in ViewBag.newProduct)
-                           {
-                                 <div class="col-lg-2">
+                            <div class="col-lg-12">
                                 <div class="single-product mt-30">
                                     <div class="product-image">
                                         <a href="single-product.html">
-                                            @foreach (var prodImg in item.ProductImage)
-                                           {
-                                               if (prodImg.isMain)
-                                               {
-                                                 <img class="second-image" src="assets/images/product/@prodImg" alt="product">
-                                               }
-                                           }
-                                            <img class="second-image" src="assets/images/product/@item." alt="product">
+                                            @foreach (var item in Model.Products)
+                                        {
+                                            if (item.NewArrival)
+                                            {
+                                                @foreach (var imgs in item.ProductImages)
+                                                {
+                                                    
+                                                if (imgs.IsMain)
+                                                    {
+                                                        <img class="first-image" src="~/assets/images/special-products/@imgs.ImageUrl" alt="product">
+                                                    }
+                                                   else if (!imgs.IsMain)
+                                                     {
+                                                    <img class="second-image" src="~/assets/images/special-products/@imgs.ImageUrl" alt="product">
+                                                    break;
+                                                }
+                                            }
+                                        } 
+                                      }
                                         </a>
                                         <ul class="product-meta">
                                             <li><a href="#"><i class="icon ion-bag"></i></a></li>
@@ -203,7 +212,6 @@
                                     </div>
                                 </div> <!-- single product -->
                             </div>
-                           }
                         </div> <!-- row -->
                     </div> <!-- product items -->
                 </div>

@@ -8,9 +8,6 @@ namespace AllupBackEndProject.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        [NotMapped]
-        public IFormFile Image { get; set; }
-        public string ImageUrl { get; set; }
         public bool IsDeleted { get; set; }
         public Nullable<DateTime> CreatedAt { get; set; }
         public Nullable<DateTime> DeletedAt { get; set; }
