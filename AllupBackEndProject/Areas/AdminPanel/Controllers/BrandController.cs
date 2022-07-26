@@ -43,6 +43,16 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
             return RedirectToAction("index");
         }
 
+        public async Task<IActionResult> Restore(int? id)
+        {
+            if (id == null) return NotFound();
+            Brand dbBrand = await _context.Brands.FirstOrDefaultAsync(b => b.Id == id);
+            if (dbBrand == null) return NotFound();
+            dbBrand.IsDeleted = false;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("index");
+        }
+
         public IActionResult Create()
         {
             return View();
@@ -52,6 +62,30 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Brand brand)
         {
+
+            Brand dbBrand = await _context.Brands.FindAsync(brand.Id);
+            Brand dbBrandName = new Brand();
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            if (brand.Name == null)
+            {
+                ModelState.AddModelError("Name", "Brand Name Cannot be Empty!");
+                return View();
+            }
+            else
+            {
+                dbBrandName = await _context.Brands.FirstOrDefaultAsync(p => p.Name.Trim().ToLower() == brand.Name.Trim().ToLower());
+            }
+            if (dbBrandName != null)
+            {
+                if (dbBrandName.Name.Trim().ToLower() != dbBrand.Name.Trim().ToLower())
+                {
+                    ModelState.AddModelError("Name", "This Name Is already Exist!");
+                    return View();
+                }
+            }
 
             if (brand.Image == null)
             {
@@ -97,15 +131,19 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
         public async Task<IActionResult> Update(Brand brand)
         {
             Brand dbBrand = await _context.Brands.FindAsync(brand.Id);
+            Brand dbBrandName = new Brand();
             if (!ModelState.IsValid)
             {
                 return View();
             }
-            Brand dbBrandName = await _context.Brands.FirstOrDefaultAsync(p => p.Name.Trim().ToLower() == brand.Name.Trim().ToLower());
             if (brand.Name == null)
             {
                 ModelState.AddModelError("Name", "Brand Name Cannot be Empty!");
                 return View();
+            }
+            else
+            {
+                dbBrandName = await _context.Brands.FirstOrDefaultAsync(p => p.Name.Trim().ToLower() == brand.Name.Trim().ToLower());
             }
             if (dbBrandName != null)
             {
