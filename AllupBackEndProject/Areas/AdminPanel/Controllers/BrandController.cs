@@ -71,7 +71,7 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
             }
             if (brand.Name == null)
             {
-                ModelState.AddModelError("Name", "Brand Name Cannot be Empty!");
+                ModelState.AddModelError("Name", "Category Name Cannot be Empty!");
                 return View();
             }
             else
@@ -80,7 +80,7 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
             }
             if (dbBrandName != null)
             {
-                if (dbBrandName.Name.Trim().ToLower() != dbBrand.Name.Trim().ToLower())
+                if (dbBrandName.Name.Trim().ToLower() == brand.Name.Trim().ToLower())
                 {
                     ModelState.AddModelError("Name", "This Name Is already Exist!");
                     return View();

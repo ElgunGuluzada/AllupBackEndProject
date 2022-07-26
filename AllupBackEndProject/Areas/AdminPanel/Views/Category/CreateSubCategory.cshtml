@@ -1,4 +1,4 @@
-﻿@model Brand
+﻿@model Category
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Areas/AdminPanel/Views/_AdminLayout.cshtml";
@@ -23,21 +23,22 @@
                   </div>
 
                    <div class="row">
-                    <div class="col-sm-3">
-                      <!-- text input -->
+                    <div class="col-sm-2">
+                      <!-- select -->
                       <div class="form-group">
-                        <label asp-for="@Model.Image"></label><br />
-                        <input  asp-for="@Model.Image">
-                        <span  class="text-danger" asp-validation-for="Image"></span>
+                        <label asp-for="Parent">Custom Select</label>
+                        <select id="select" asp-for="ParentId" asp-items="@ViewBag.Categories" class="custom-select"></select>
+                        <span  class="text-danger" asp-validation-for="ParentId"></span>
                       </div>
                     </div>
-                  </div>
+                   </div>
+
                  <button type="submit" class="btn btn-success">Submit</button> 
-                 <a asp-controller="brand" asp-action="index" class="btn btn-danger">Cancel</a>
+                 <a asp-controller="category" asp-action="index" class="btn btn-danger">Cancel</a>
                 </form>
               </div>
               <!-- /.card-body -->
-            </div>
+ </div>
 
 
 @section Scripts{

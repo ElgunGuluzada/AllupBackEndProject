@@ -1,4 +1,5 @@
-﻿@model Brand
+﻿                
+@model Category
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Areas/AdminPanel/Views/_AdminLayout.cshtml";
@@ -16,28 +17,38 @@
                       <!-- text input -->
                       <div class="form-group">
                         <label asp-for="@Model.Name"></label>
-                        <input asp-for="@Model.Name" class="form-control" placeholder="Name ...">
+                        <input id="catName" asp-for="@Model.Name" class="form-control" placeholder="Name ...">
                         <span  class="text-danger" asp-validation-for="Name"></span>
                       </div>
                     </div>
                   </div>
-
-                   <div class="row">
+                    <div class="row">
                     <div class="col-sm-3">
                       <!-- text input -->
                       <div class="form-group">
-                        <label asp-for="@Model.Image"></label><br />
-                        <input  asp-for="@Model.Image">
+                        <label class="text-default" asp-for="@Model.Image">Select for Main Category</label><br />
+                        <input id="img" asp-for="@Model.Image">
                         <span  class="text-danger" asp-validation-for="Image"></span>
                       </div>
                     </div>
                   </div>
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <!-- select -->
+                      <div class="form-group">
+                        <label class="text-default" asp-for="Parent">Select for SubCategory</label>
+                        <select id="select" asp-for="ParentId" asp-items="@ViewBag.Categories" class="custom-select">
+                        </select>
+                        <span  class="text-danger" asp-validation-for="ParentId"></span>
+                      </div>
+                    </div>
+                   </div>
                  <button type="submit" class="btn btn-success">Submit</button> 
-                 <a asp-controller="brand" asp-action="index" class="btn btn-danger">Cancel</a>
+                 <a asp-controller="category" asp-action="index" class="btn btn-danger">Cancel</a>
                 </form>
               </div>
               <!-- /.card-body -->
-            </div>
+ </div>
 
 
 @section Scripts{
@@ -51,3 +62,20 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
 }
 
+<script>
+    let catName = document.getElementById("catName")
+    let select = document.getElementById("select")
+    let img = document.getElementById("img")
+    select.onchange = function(){
+       img.disabled=true;
+    }
+    img.onchange=function(){
+        if(this.value.length>0){
+          select.disabled=true
+        }
+        else
+        {
+          select.disabled=false
+        }
+    }
+</script>
