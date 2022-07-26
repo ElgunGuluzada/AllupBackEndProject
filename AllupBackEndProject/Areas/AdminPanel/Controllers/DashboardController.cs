@@ -18,7 +18,7 @@ namespace _17._06._2022_FrontToBack.Areas.adminPanel.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             //var curUser = await _userManager.GetUserAsync(HttpContext.User);
             //ViewBag.AdminUser = curUser.FullName;
