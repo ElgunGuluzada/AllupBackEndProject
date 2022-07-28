@@ -169,29 +169,20 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
                 .Include(c => c.Category)
                 .FirstOrDefaultAsync(b => b.Id == id);
 
-            foreach (var item in tag)
-            {
-                foreach (var prod in dbProduct.ProductTags)
-                {
-                    if (prod.TagId == item.Id)
-                    {
-                        var prodTags = prod.TagId;
-                    }
-                }
-            }
             if (dbProduct == null) return NotFound();
             return View(dbProduct);
         }
         [HttpPost]
         public async Task<IActionResult> Update(Product product)
         {
+            var tags = await _context.Tags.Where(p => p.IsDeleted != true).ToListAsync();
             var allCategories = await _context.Categories.ToListAsync();
             var mainCategories = allCategories.Where(p => p.ParentId == null).Where(p => p.IsDeleted != true).ToList();
             var altCategories = allCategories.Where(c => c.ParentId != null).Where(p => p.IsDeleted != true).ToList();
             ViewBag.altCategories = new SelectList((altCategories).ToList(), "Id", "Name");
             ViewBag.ProductBrands = new SelectList(_context.Brands.Where(p => p.IsDeleted != true).ToList(), "Id", "Name");
             ViewBag.mainCategories = new SelectList((mainCategories).ToList(), "Id", "Name");
-            ViewBag.Tags = new SelectList(_context.Tags.Where(p => p.IsDeleted != true).ToList(), "Id", "Name");
+            ViewBag.Tags = new SelectList(tags.Where(p => p.IsDeleted != true).ToList(), "Id", "Name");
             if (!ModelState.IsValid)
             {
                 return View();
@@ -268,10 +259,6 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
                         return View();
                     }
                 }
-
-
-
-
             }
 
             foreach (var item in dbProduct.ProductImages)
@@ -295,6 +282,26 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
                     return View();
                 }
             }
+            if (product.TagIds==null)
+            {
+                foreach (var item1 in dbProduct.ProductTags)
+                {
+                    item1.TagId = item1.TagId;
+                }
+            }
+            else
+            {
+                List<ProductTags> productTags = new List<ProductTags>();
+                foreach (int item in product.TagIds)
+                {
+                    ProductTags productTag = new ProductTags();
+                    productTag.TagId = item;
+                    productTag.ProductId = dbProduct.Id;
+                    productTags.Add(productTag);
+                }
+                dbProduct.ProductTags = productTags;
+            }
+           
 
             dbProduct.Name = product.Name;
             dbProduct.Price = product.Price;
