@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AllupBackEndProject.Models
 {
@@ -22,6 +24,11 @@ namespace AllupBackEndProject.Models
 
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
+
+        [NotMapped]
+        public List<int> TagIds { get; set; }
+        [NotMapped]
+        public List<IFormFile> Photos { get; set; }
 
         public List<ProductImage> ProductImages { get; set; }
         public List<ProductTags> ProductTags { get; set; }

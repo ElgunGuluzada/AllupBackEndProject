@@ -34,7 +34,7 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
         public async Task<IActionResult> Create()
         {
             var allCategories = _context.Categories.ToList();
-            var mainCategories = await _context.Categories.Where(c => c.ParentId == null).ToListAsync();
+            var mainCategories = await _context.Categories.Where(c => c.ParentId == null).Where(c => c.IsDeleted != true).ToListAsync();
             ViewBag.Categories = new SelectList((mainCategories).ToList(), "Id", "Name");
             return View();
         }
@@ -43,7 +43,7 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category)
         {
-            var mainCategories = await _context.Categories.Where(c => c.ParentId == null).ToListAsync();
+            var mainCategories = await _context.Categories.Where(c => c.ParentId == null).Where(c => c.IsDeleted != true).ToListAsync();
             ViewBag.Categories = new SelectList((mainCategories).ToList(), "Id", "Name");
             Category dbCategory = await _context.Categories.FindAsync(category.Id);
             Category dbCategoryName = new Category();
@@ -107,7 +107,7 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
         public async Task<IActionResult> CreateSubCategory()
         {
             var allCategories = _context.Categories.ToList();
-            var mainCategories = await _context.Categories.Where(c => c.ParentId == null).ToListAsync();
+            var mainCategories = await _context.Categories.Where(c => c.ParentId == null).Where(c => c.IsDeleted != true).ToListAsync();
             ViewBag.Categories = new SelectList((mainCategories).ToList(), "Id", "Name");
             return View();
         }
@@ -117,7 +117,7 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
         public async Task<IActionResult> CreateSubCategory(Category category)
         {
             var allCategories = _context.Categories.ToList();
-            var mainCategories = await _context.Categories.Where(c => c.ParentId == null).ToListAsync();
+            var mainCategories = await _context.Categories.Where(c => c.ParentId == null).Where(c=>c.IsDeleted!=true).ToListAsync();
             ViewBag.Categories = new SelectList((mainCategories).ToList(), "Id", "Name");
             if (!ModelState.IsValid)
             {

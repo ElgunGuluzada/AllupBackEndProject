@@ -303,7 +303,7 @@ namespace AllupBackEndProject.Migrations
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2022, 7, 23, 1, 6, 21, 583, DateTimeKind.Unspecified).AddTicks(9177),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "category-8.jpg",
                             IsDeleted = false,
                             Name = "Accessories & Parts"
@@ -735,26 +735,6 @@ namespace AllupBackEndProject.Migrations
                     b.HasIndex("SliderId");
 
                     b.ToTable("SliderContents");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Desc = "Explore and immerse in exciting 360 content with Fulldive’s all-in-one virtual reality platform",
-                            Name = "Fulldive VR.",
-                            Offer = "Save $120 when you buy",
-                            SliderId = 1,
-                            Title = "2020 Virtual Reality"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Desc = "Explore and immerse in exciting 360 content with Fulldive’s all-in-one virtual reality platform",
-                            Name = "Sony Bravia.",
-                            Offer = "Save $120 when you buy",
-                            SliderId = 2,
-                            Title = "4K HDR Smart TV 43"
-                        });
                 });
 
             modelBuilder.Entity("AllupBackEndProject.Models.Tag", b =>
