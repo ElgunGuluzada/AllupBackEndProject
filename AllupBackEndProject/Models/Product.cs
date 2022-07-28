@@ -19,6 +19,8 @@ namespace AllupBackEndProject.Models
         public int StockCount { get; set; }
         public string Desc { get; set; }
 
+        [NotMapped]
+        public int OwnCategory { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 

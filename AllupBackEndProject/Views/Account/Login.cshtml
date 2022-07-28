@@ -1,0 +1,148 @@
+﻿@model LoginVM
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ <!--====== Login Part Start ======-->
+
+    <section class="login-area pt-10">
+        <div class="container-fluid custom-container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="login-register-wrapper mt-30">
+                        <h4 class="allup-title">Login to Your Account</h4>
+                        <form method="post">
+                              <div class="input-group mb-3">
+                                  <div class="input-group-append">
+                                   <div class="input-group-text">
+                                     <span class="fas fa-user"></span>
+                                  </div>
+                                </div>
+                                 <input asp-for="Email" class="form-control" placeholder="Email">
+                                  <span style="position: absolute; top:35px" class="text-danger" asp-validation-for="Email"></span>
+                            </div>
+
+                           <div class="input-group mb-3">
+                                  <div class="input-group-append">
+                                   <div class="input-group-text">
+                                     <span class="fas fa-lock"></span>
+                                  </div>
+                                </div>
+                                 <input asp-for="Password" class="form-control" placeholder="Password">
+                                  <span style="position: absolute; top:35px" class="text-danger" asp-validation-for="Password"></span>
+                            </div>
+                            <div class="custom-checkbox mt-30">
+                                <input type="checkbox" id="account">
+                                <label for="account"></label>
+                                <p>Remember me</p>
+                            </div>
+                            <div class="single-form">
+                                <button class="main-btn main-btn-2">Login</button>
+                            </div>
+                        </form>
+                        <p class="mt-20"><a href="#">Lost your password?</a></p>
+                        <p class="mt-10">No account? <a href="register.html">Create one here.</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--====== Login Part Ends ======-->
+
+     
+    <!--====== Brand Part Start ======-->
+
+    <div class="brand-area pt-80">
+        <div class="container-fluid custom-container">
+            <div class="row brand-active">
+               @foreach (var item in ViewBag.brand)
+               {
+                    <div class="col-lg-2">
+                    <div class="single-brand">
+                        <a href="#">
+                            <img src="~/assets/images/brand/@item.ImageUrl" alt="brand">
+                        </a>
+                    </div> <!-- single brand -->
+                </div>
+               }
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </div>
+
+    <!--====== Brand Part Ends ======-->
+
+    <!--====== Features Banner Part Start ======-->
+
+    <section class="features-banner-area pt-80 pb-100">
+        <div class="container-fluid custom-container">
+            <div class="features-banner-wrapper d-flex flex-wrap">
+                <div class="single-features-banner d-flex">
+                    <div class="banner-icon">
+                        <img src="~/assets/images/banner-icon/icon1.png" alt="Icon">
+                    </div>
+                    <div class="banner-content media-body">
+                        <h3 class="banner-title">Free Shipping</h3>
+                        <p>Free shipping on all US order</p>
+                    </div>
+                </div> <!-- single features banner -->
+                <div class="single-features-banner d-flex">
+                    <div class="banner-icon">
+                        <img src="~/assets/images/banner-icon/icon2.png" alt="Icon">
+                    </div>
+                    <div class="banner-content media-body">
+                        <h3 class="banner-title">Support 24/7</h3>
+                        <p>Contact us 24 hours a day</p>
+                    </div>
+                </div> <!-- single features banner -->
+                <div class="single-features-banner d-flex">
+                    <div class="banner-icon">
+                        <img src="~/assets/images/banner-icon/icon3.png" alt="Icon">
+                    </div>
+                    <div class="banner-content media-body">
+                        <h3 class="banner-title">100% Money Back</h3>
+                        <p>You have 30 days to Return</p>
+                    </div>
+                </div> <!-- single features banner -->
+                <div class="single-features-banner d-flex">
+                    <div class="banner-icon">
+                        <img src="~/assets/images/banner-icon/icon4.png" alt="Icon">
+                    </div>
+                    <div class="banner-content media-body">
+                        <h3 class="banner-title">90 Days Return</h3>
+                        <p>If goods have problems</p>
+                    </div>
+                </div> <!-- single features banner -->
+                <div class="single-features-banner d-flex">
+                    <div class="banner-icon">
+                        <img src="~/assets/images/banner-icon/icon5.png" alt="Icon">
+                    </div>
+                    <div class="banner-content media-body">
+                        <h3 class="banner-title">Payment Secure</h3>
+                        <p>We ensure secure payment</p>
+                    </div>
+                </div> <!-- single features banner -->
+            </div> <!-- features banner wrapper -->
+        </div> <!-- container -->
+    </section>
+
+    <!--====== Features Banner Part Ends ======-->
+
+        <script>
+    let eye = document.querySelectorAll(".fa-lock")
+        eye.forEach(e =>{
+             e.onmouseover=function(){
+                 this.classList.remove("fa-lock")
+                 this.classList.add("fa-unlock")
+            e.parentElement.parentElement.nextElementSibling.type="text"
+            };
+            e.onmouseleave=function(){
+                 this.classList.add("fa-lock")
+                 this.classList.remove("fa-unlock")
+                       e.parentElement.parentElement.nextElementSibling.type="password"
+            }
+          }
+        )
+
+    </script>

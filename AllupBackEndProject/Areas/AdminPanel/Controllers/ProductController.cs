@@ -301,8 +301,14 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
                 }
                 dbProduct.ProductTags = productTags;
             }
-           
-
+            //if (product.CategoryId==null && product.OwnCategory==null)
+            //{
+            //    dbProduct.CategoryId = dbProduct.CategoryId;
+            //}
+            //if (product.OwnCategory==null)
+            //{
+            //    dbProduct.CategoryId = product.CategoryId;
+            //}
             dbProduct.Name = product.Name;
             dbProduct.Price = product.Price;
             dbProduct.ProductImages = images;
@@ -313,7 +319,7 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
             dbProduct.DiscountPercent = product.DiscountPercent;
             dbProduct.DiscountPrice = product.Price - (product.Price * product.DiscountPercent) / 100;
             dbProduct.BrandId = product.BrandId;
-            dbProduct.CategoryId = product.CategoryId;
+            dbProduct.CategoryId = product.OwnCategory;
             dbProduct.TaxPercent = product.TaxPercent;
             dbProduct.Desc = product.Desc;
             dbProduct.UptadetAt = System.DateTime.Now;
