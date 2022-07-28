@@ -54,6 +54,36 @@
                     </div>
                   </div>
 
+                 @*  <div class="row">
+                    <div class="col-sm-6">
+                  <div class="form-check">
+                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                      <label class="form-check-label" for="flexRadioDefault1">
+                       @foreach (var item in Model.ProductImages)
+                           {
+                             if (item.IsMain)
+                          {
+                            <img src="~/assets/images/product/@item.ImageUrl" width="100%" class="img-fluid col-4" alt="...">
+                            <span>Profile Photo</span>
+                          }
+                         }
+                      </label>
+                    </div>
+                      @foreach (var item in Model.ProductImages)
+                           {
+                             if (!item.IsMain)
+                          {
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
+                      <label class="form-check-label" for="flexRadioDefault2">
+                      </label>
+                    </div>
+                        <img src="~/assets/images/product/@item.ImageUrl" width="100%" class="img-fluid col-4" alt="...">
+                          }
+                         }
+                    </div>
+                    </div>*@
+
                    <div class="row">
                     <div class="col-sm-3">
                       <!-- text input -->
@@ -108,6 +138,8 @@
                       </div>
                     </div>
                    </div>
+                 
+
                   <div class="row">
                     <div class="col-sm-6">
                       <!-- textarea -->

@@ -124,12 +124,18 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
                 DiscountPercent = product.DiscountPercent,
                 DiscountPrice = product.Price - (product.Price * product.DiscountPercent) / 100,
                 BrandId = product.BrandId,
-                CategoryId = product.CategoryId,
                 TaxPercent = product.TaxPercent,
                 Desc = product.Desc,
                 CreatedAt = System.DateTime.Now
             };
-
+            if (product.OwnCategory == null)
+            {
+                newProduct.CategoryId = product.CategoryId;
+            }
+            else
+            {
+                newProduct.CategoryId = product.OwnCategory;
+            }
             List<ProductTags> productTags = new List<ProductTags>();
             foreach (int item in product.TagIds)
             {
@@ -139,8 +145,6 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
                 productTags.Add(productTag);
             }
             newProduct.ProductTags = productTags;
-
-
 
             await _context.Products.AddAsync(newProduct);
             await _context.SaveChangesAsync();
@@ -301,17 +305,14 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
                 }
                 dbProduct.ProductTags = productTags;
             }
-            //if (product.CategoryId==null && product.OwnCategory==null)
-            //{
-            //    dbProduct.CategoryId = dbProduct.CategoryId;
-            //}
-            //if (product.OwnCategory==null)
-            //{
-            //    dbProduct.CategoryId = product.CategoryId;
-            //}
+            if (product.OwnCategory == null)
+            {
+                dbProduct.CategoryId = product.CategoryId;
+            }
             dbProduct.Name = product.Name;
             dbProduct.Price = product.Price;
             dbProduct.ProductImages = images;
+
             dbProduct.StockCount = product.StockCount;
             dbProduct.IsDeleted = false;
             dbProduct.IsAvailability = true;

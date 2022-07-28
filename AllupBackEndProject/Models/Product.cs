@@ -31,7 +31,8 @@ namespace AllupBackEndProject.Models
         public List<int> TagIds { get; set; }
         [NotMapped]
         public List<IFormFile> Photos { get; set; }
-
+        //[NotMapped]
+        //public bool IsMain { get; set; }
         public List<ProductImage> ProductImages { get; set; }
         public List<ProductTags> ProductTags { get; set; }
         public List<OrderItem> OrderItems { get; set; }
