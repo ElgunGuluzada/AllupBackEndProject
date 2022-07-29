@@ -854,10 +854,7 @@ $(function() {
         addBtn.forEach(add =>
             add.addEventListener("click", function () {
                 let dataId = this.getAttribute("data-id")
-                console.log(dataId)
-                if () {
-
-                }
+                //console.log(dataId)
                 axios.post("/basket/AddItem?id=" + dataId)
                     .then(function (response) {
                         // handle success
@@ -869,4 +866,4 @@ $(function() {
                         // handle error
                         console.log(error);
                     })
-            })
+            }));

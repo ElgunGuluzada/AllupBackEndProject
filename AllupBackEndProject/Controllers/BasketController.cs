@@ -122,7 +122,6 @@ namespace AllupBackEndProject.Controllers
                     {
                         item.Price = dbProduct.Price;
                     }
-
                     item.Name = dbProduct.Name;
                     item.Category = dbProduct.Category.Name;
                     item.Desc = dbProduct.Desc;
@@ -245,6 +244,41 @@ namespace AllupBackEndProject.Controllers
                 return RedirectToAction("login", "account");
             }
 
+        }
+
+        public IActionResult Checkout()
+        {
+            ViewBag.brand = _context.Brands.Where(b => b.IsDeleted != true).ToList();
+            if (User.Identity.IsAuthenticated)
+            {
+                userName = User.Identity.Name;
+            }
+            string basket = Request.Cookies[$"{userName}basket"];
+            List<BasketVM> products;
+            if (basket != null)
+            {
+                products = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
+                foreach (var item in products)
+                {
+                    Product dbProduct = _context.Products
+                    .FirstOrDefault(p => p.Id == item.Id);
+                    if (dbProduct.DiscountPercent > 0)
+                    {
+                        item.Price = dbProduct.DiscountPrice;
+                    }
+                    else
+                    {
+                        item.Price = dbProduct.Price;
+                    }
+                    item.Name = dbProduct.Name;
+                }
+            }
+            else
+            {
+              products = new List<BasketVM>();
+            }
+
+            return View(products);
         }
     }
 }

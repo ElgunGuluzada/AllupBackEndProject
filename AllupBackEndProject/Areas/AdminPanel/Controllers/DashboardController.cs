@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace _17._06._2022_FrontToBack.Areas.adminPanel.Controllers
 {
-    [Area("adminpanel")] 
-    //[Authorize(Roles ="Admin , SuperAdmin")]
+    [Area("adminpanel")]
     public class DashboardController : Controller
     {
 
-       private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
         public DashboardController(UserManager<AppUser> userManager)
         {
@@ -21,7 +20,10 @@ namespace _17._06._2022_FrontToBack.Areas.adminPanel.Controllers
         public IActionResult Index()
         {
             //var curUser = await _userManager.GetUserAsync(HttpContext.User);
-            //ViewBag.AdminUser = curUser.FullName;
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.AdminUser = User.Identity.Name;
+            }
             return View();
         }
 
