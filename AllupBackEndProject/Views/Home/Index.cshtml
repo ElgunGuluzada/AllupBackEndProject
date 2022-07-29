@@ -136,66 +136,41 @@
 
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="new" role="tabpanel" aria-labelledby="new-tab">
-                    <div class="product-items">
+                   <div class="product-items">
                         <div class="row product-active">
-                            <div class="col-lg-12">
-                                <div class="single-product mt-30">
-                                    <div class="product-image">
-                                        <a href="single-product.html">
-                                            @foreach (var item in Model.Products)
-                                        {
-                                            if (item.NewArrival)
-                                            {
-                                                @foreach (var imgs in item.ProductImages)
-                                                {
-                                                    
-                                                if (imgs.IsMain)
-                                                    {
-                                                        <img class="first-image" src="~/assets/images/special-products/@imgs.ImageUrl" alt="product">
-                                                    }
-                                                   else if (!imgs.IsMain)
-                                                     {
-                                                    <img class="second-image" src="~/assets/images/special-products/@imgs.ImageUrl" alt="product">
-                                                    break;
-                                                }
-                                            }
-                                        } 
-                                      }
-                                        </a>
-                                        <ul class="product-meta">
-                                            <li><a href="#"><i class="icon ion-bag"></i></a></li>
-                                            <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
-                                            <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                            <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product-content">
-                                        <ul class="product-rating">
-                                            <li><i class="fas fa-star"></i></li>
-                                            <li><i class="fas fa-star"></i></li>
-                                            <li><i class="fas fa-star"></i></li>
-                                            <li><i class="fas fa-star"></i></li>
-                                            <li><i class="fas fa-star"></i></li>
-                                        </ul>
-                                        <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                        <div class="product-price">
-                                            <span class="price-sale">€11.90</span>
-                                        </div>
-                                    </div>
-                                </div> <!-- single product -->
 
-                                <div class="single-product mt-30">
+                                @foreach (var item in Model.Products)
+                               {
+                            <div class="col-lg-12">
+                                   <div class="single-product mt-30">
                                     <div class="product-image">
                                         <a href="single-product.html">
-                                            <img class="first-image" src="assets/images/product/product-10.jpg" alt="product">
-                                            <img class="second-image" src="assets/images/product/product-11.jpg" alt="product">
+                                               @foreach (var prodImg in item.ProductImages)
+                                           {
+                                               if (prodImg.IsMain)
+                                               {
+                                                 <img width="200" height="220" class="first-image" src="~/assets/images/product/@prodImg.ImageUrl" alt="product">
+                                               }
+                                              else
+                                               {
+                                                   <img width="200" height="220" class="second-image" src="~/assets/images/product/@prodImg.ImageUrl" alt="product">
+                                                 if(prodImg!=null){
+                                                  break;
+                                                 }
+                                               }
+                                           }
+                                           
                                         </a>
                                         <ul class="product-meta">
-                                            <li><a href="#"><i class="icon ion-bag"></i></a></li>
+                                            <li><a asp-action="additem" asp-controller="basket" asp-route-id="@item.Id"><i class="icon ion-bag"></i></a></li>
                                             <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
                                             <li><a href="#"><i class="icon ion-android-options"></i></a></li>
                                             <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
                                         </ul>
+                                        @if (item.DiscountPercent>0)
+                                        {
+                                            <span class="discount-product">-@item.DiscountPercent%</span>
+                                        }
                                     </div>
                                     <div class="product-content">
                                         <ul class="product-rating">
@@ -205,13 +180,21 @@
                                             <li><i class="fas fa-star"></i></li>
                                             <li><i class="fas fa-star"></i></li>
                                         </ul>
-                                        <h4 class="product-title"><a href="single-product.html">Winter Jacket eu accumsan massa facili originals Kaval Wind breaker</a></h4>
+                                        <h4 class="product-title"><a href="single-product.html">@item.Name</a></h4>
                                         <div class="product-price">
-                                            <span class="price-sale">€23.90</span>
+                                            @if (item.DiscountPercent>0)
+                                            {
+                                               <span class="regular-price ">€@item.Price</span>
+                                               <span class="price-sale">€@item.DiscountPrice</span>
+                                            }
+                                            else{
+                                                <span class="price-sale">€@item.Price</span>
+                                            }
                                         </div>
                                     </div>
                                 </div> <!-- single product -->
                             </div>
+                               }
                         </div> <!-- row -->
                     </div> <!-- product items -->
                 </div>
