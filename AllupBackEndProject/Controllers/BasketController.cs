@@ -58,9 +58,18 @@ namespace AllupBackEndProject.Controllers
                     {
                         Id = dbProduct.Id,
                         ProductCount = 1,
-                        Price = dbProduct.Price
                     };
-                    products.Add(basketVM);
+                if (dbProduct.DiscountPercent>0)
+                {
+                    basketVM.Price = dbProduct.DiscountPrice;
+
+                }
+                else
+                {
+                    basketVM.Price = dbProduct.Price;
+
+                }
+                products.Add(basketVM);
                 }
                 else
                 {
@@ -82,8 +91,8 @@ namespace AllupBackEndProject.Controllers
                     Count = count,
                 };
 
-                //return Ok(obj);
-                return RedirectToAction("index", "home");
+            //return Ok(obj);
+            return RedirectToAction("index", "home");
 
         }
 
@@ -105,7 +114,15 @@ namespace AllupBackEndProject.Controllers
                     .Include(c => c.Category)
                     .Include(i=>i.ProductImages)
                     .FirstOrDefault(p => p.Id == item.Id);
-                    item.Price = dbProduct.Price;
+                    if (dbProduct.DiscountPercent>0)
+                    {
+                        item.Price = dbProduct.DiscountPrice;
+                    }
+                    else
+                    {
+                        item.Price = dbProduct.Price;
+                    }
+
                     item.Name = dbProduct.Name;
                     item.Category = dbProduct.Category.Name;
                     item.Desc = dbProduct.Desc;

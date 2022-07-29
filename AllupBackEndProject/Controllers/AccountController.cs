@@ -136,15 +136,15 @@ namespace AllupBackEndProject.Controllers
                         else if (item == "Ban")
                         {
                             await _signInManager.SignOutAsync();
-
                             TempData["Banned"] = "Hesabiniz banlanmisdir";
                             return View(login);
                         }
                         else if (appUser.EmailConfirmed == true && item == "Member")
                         {
-                            return RedirectToAction("Index", "home");
-                        }
-                        else if (item.ToLower().Contains("admin"))
+                             await _signInManager.SignInAsync(appUser, true);
+                             return RedirectToAction("Index", "home");
+                    }
+                    else if (item.ToLower().Contains("admin"))
                         {
                             await _signInManager.SignInAsync(appUser, true);
                             return RedirectToAction("index", "dashboard", new { area = "AdminPanel" });

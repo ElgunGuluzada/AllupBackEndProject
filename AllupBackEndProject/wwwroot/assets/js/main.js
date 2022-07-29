@@ -844,13 +844,29 @@ $(function() {
         }
     });
     $( "#amount" ).val( "€" + $( "#slider-range" ).slider( "values", 0 ) + " - €" + $( "#slider-range" ).slider( "values", 1 ) );
-    
-    
-    
-    
-    
-    
-    
-    
+     
     
 });
+
+        let addBtn = document.querySelectorAll(".addBtn")
+        let totalCount = document.getElementById("totalCount")
+        let totalPrice = document.getElementById("totalPrice")
+        addBtn.forEach(add =>
+            add.addEventListener("click", function () {
+                let dataId = this.getAttribute("data-id")
+                console.log(dataId)
+                if () {
+
+                }
+                axios.post("/basket/AddItem?id=" + dataId)
+                    .then(function (response) {
+                        // handle success
+                        totalCount.innerHTML = response.data.count
+                        totalPrice.innerHTML = ` $${response.data.price}`
+                        //console.log(response);
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    })
+            })

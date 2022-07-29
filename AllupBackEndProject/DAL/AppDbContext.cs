@@ -22,6 +22,7 @@ namespace AllupBackEndProject.DAL
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
+        public DbSet<Bio> Bios { get; set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -370,6 +371,22 @@ namespace AllupBackEndProject.DAL
                 TagId = 6,
                 }
            );
+            modelBuilder.Entity<Bio>().HasData(
+                new Bio
+                {
+                    Id = 1,
+                    Logo = "logo.png",
+                    CouponCode = "<p>Get FREE Shipping with <b>$35!</b> Code: FREESHIPPING</p>",
+                    SupportNumber = 500500500,
+                    Address = "45 Grand Central Terminal New York,NY 1017 United State USA",
+                    Phone = 123456789,
+                    Email = "email@yourwebsitename.com",
+                    WorkTimes = "Mon-Sat 9:00pm - 5:00pm Sun:Closed",
+                    Author = "Me Myself",
+                    CardsImageUrl = "payment.png",
+                    NewsLetterImgUrl = "bg-newletter.jpg"
+                }
+            );
         }
     }
 }
