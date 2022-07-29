@@ -1,7 +1,9 @@
-﻿using AllupBackEndProject.Models;
+﻿using AllupBackEndProject.DAL;
+using AllupBackEndProject.Models;
 using AllupBackEndProject.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +18,14 @@ namespace AllupBackEndProject.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _rolemanager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly AppDbContext _context;
 
-        public UserController(UserManager<AppUser> userManager, RoleManager<IdentityRole> rolemanager, SignInManager<AppUser> signInManager)
+        public UserController(UserManager<AppUser> userManager, RoleManager<IdentityRole> rolemanager, SignInManager<AppUser> signInManager,AppDbContext context)
         {
             _userManager = userManager;
             _rolemanager = rolemanager;
             _signInManager = signInManager;
+            _context = context;
         }
         public async Task<IActionResult> Index()
         {
@@ -122,6 +126,14 @@ namespace AllupBackEndProject.Controllers
                 return Content("Silmek Olmaz");
             }
             return RedirectToAction("index");
+        }
+        public async Task<IActionResult> Detail (string id)
+        {
+            AppUser dbUser = await _userManager.FindByIdAsync(id);
+            List<Order> orders = await _context.Orders.Where(o => o.AppUserId == dbUser.Id).Include(i=>i.OrderItems).Where(p=>p.OrderStatus==OrderStatus.Pending).ToListAsync();
+            
+            return View(orders);
+
         }
     }
 }

@@ -200,17 +200,30 @@ namespace AllupBackEndProject.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Order()
+        public async Task<IActionResult> Order(Order newOrder)
         {
             if (User.Identity.IsAuthenticated)
             {
+                    AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+                    Order order = new Order();
+                    order.FirstName = newOrder.FirstName;
+                    order.LastName = newOrder.LastName;
+                    order.City = newOrder.City;
+                    order.Country = newOrder.Country;
+                    order.Email = newOrder.Email;
+                    order.Phone = newOrder.Phone;
+                    order.ZipCode = newOrder.ZipCode;
+                    order.Address = newOrder.Address;   
+                    order.SaledAt = DateTime.Now;
+                    order.AppUserId = user.Id;
+                    order.OrderStatus = OrderStatus.Pending;
+                
+
                 userName = User.Identity.Name;
-                AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-                Order order = new Order();
-                order.SaledAt = DateTime.Now;
-                order.AppUserId = user.Id;
+               
 
                 List<BasketVM> basketProducts = JsonConvert.DeserializeObject<List<BasketVM>>(Request.Cookies[$"{userName}basket"]);
+                ViewBag.Products = basketProducts;
                 List<OrderItem> orderItems = new List<OrderItem>();
                 double total = 0;
                 foreach (var basketProduct in basketProducts)
@@ -236,6 +249,7 @@ namespace AllupBackEndProject.Controllers
 
                 await _context.AddAsync(order);
                 await _context.SaveChangesAsync();
+
                 TempData["success"] = "Satış uğurla başa çatdı..";
                 return RedirectToAction("ShowItem");
             }
@@ -253,11 +267,14 @@ namespace AllupBackEndProject.Controllers
             {
                 userName = User.Identity.Name;
             }
+
             string basket = Request.Cookies[$"{userName}basket"];
             List<BasketVM> products;
             if (basket != null)
             {
                 products = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
+                ViewBag.Products = products;
+
                 foreach (var item in products)
                 {
                     Product dbProduct = _context.Products
@@ -278,7 +295,7 @@ namespace AllupBackEndProject.Controllers
               products = new List<BasketVM>();
             }
 
-            return View(products);
+            return View();
         }
     }
 }
