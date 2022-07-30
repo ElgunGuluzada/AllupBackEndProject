@@ -31,7 +31,7 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
         {
             List<AppUser> users =await _userManager.Users.Include(o => o.Orders).ThenInclude(i => i.OrderItems).ToListAsync();
             OrderVM orderVM = new OrderVM();
-            List<Order> orders = _context.Orders.Include(u=>u.AppUser).Include(o=>o.OrderItems).ToList();
+            List<Order> orders = _context.Orders.Include(u=>u.AppUser).Include(o=>o.OrderItems).OrderByDescending(t=>t.SaledAt).ToList();
             orderVM.Orders = orders;
             orderVM.AppUsers = users;
             return View(orderVM);

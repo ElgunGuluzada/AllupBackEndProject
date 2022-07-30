@@ -30,7 +30,34 @@ namespace AllupBackEndProject.Helpers
             message.From = new MailAddress(_email);
             message.To.Add(new MailAddress(email));
 
-            message.Subject = "Emailnizi tesdiqleyin";
+            message.Subject = "Confirm Email";
+            message.Body = confirmation;
+            message.IsBodyHtml = true;
+
+            SmtpClient client = new SmtpClient();
+            client.Credentials = new System.Net.NetworkCredential(_email, _password);
+
+            client.Host = "smtp.gmail.com";
+            client.Port = 587;
+            client.EnableSsl = true;
+            try
+            {
+                client.Send(message);
+            }
+            catch (System.Exception)
+            {
+
+            }
+            return false;
+        }
+
+        public bool SendNews(string email, string confirmation)
+        {
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(_email);
+            message.To.Add(new MailAddress(email));
+
+            message.Subject = "New Product";
             message.Body = confirmation;
             message.IsBodyHtml = true;
 

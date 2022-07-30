@@ -23,6 +23,7 @@ namespace AllupBackEndProject.DAL
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
         public DbSet<Bio> Bios { get; set;}
+        public DbSet<Subscriber> Subscribers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -377,7 +378,7 @@ namespace AllupBackEndProject.DAL
                     Id = 1,
                     Logo = "logo.png",
                     CouponCode = "<p>Get FREE Shipping with <b>$35!</b> Code: FREESHIPPING</p>",
-                    SupportNumber = 500500500,
+                    SupportNumber = "+994 55 569 98 89",
                     Address = "45 Grand Central Terminal New York,NY 1017 United State USA",
                     Phone = 123456789,
                     Email = "email@yourwebsitename.com",

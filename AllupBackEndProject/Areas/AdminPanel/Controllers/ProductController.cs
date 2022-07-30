@@ -1,10 +1,13 @@
 ﻿using AllupBackEndProject.DAL;
 using AllupBackEndProject.Extentions;
+using AllupBackEndProject.Helpers;
 using AllupBackEndProject.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,13 +19,17 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
     public class ProductController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
         private IWebHostEnvironment _env;
+        private readonly IConfiguration _config;
 
 
-        public ProductController(AppDbContext context, IWebHostEnvironment env)
+        public ProductController(AppDbContext context, IWebHostEnvironment env,UserManager<AppUser> userManager,IConfiguration config)
         {
             _context = context;
             _env = env;
+            _userManager = userManager;
+            _config = config;
         }
 
         public async Task<IActionResult> Index()
@@ -148,7 +155,21 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
 
             await _context.Products.AddAsync(newProduct);
             await _context.SaveChangesAsync();
+            List<Subscriber> subscribers  = await _context.Subscribers.ToListAsync();
+            var token = "";
+            Helper helper = new Helper(_config.GetSection("ConfirmationParameter:Email").Value, _config.GetSection("ConfirmationParameter:Password").Value);
+            foreach (var subscriber in subscribers)
+            {
+                token = $"Salam yeni mehsullarimiz burada https://localhost:44341/ ";
+                var emailResult = helper.SendNews(subscriber.Email, token);
+                continue;
+            }
+            string confirmation = Url.Action("ConfirmEmail", "Account", new
+            {
+                token
+            }, Request.Scheme);
 
+           
             return RedirectToAction("index");
         }
 
