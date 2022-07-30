@@ -3,10 +3,17 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/AdminPanel/Views/_AdminLayout.cshtml";
     int no = 0;
-    int totalCount = 0;
-    @foreach (var item in Model.Orders)
+    var username = "";
+    foreach (var item in Model.AppUsers)
     {
-        totalCount += item.OrderItems.Count;
+        foreach (var order in Model.Orders)
+        {
+            if (order.AppUserId==item.Id)
+            {
+                username = item.FullName;
+                break;
+            }
+        }
     }
 }
     <!-- /.row -->
@@ -37,7 +44,6 @@
                       <th>Owner</th>
                       <th>Date</th>
                       <th>Order Status</th>
-                      <th>Product Count</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -46,10 +52,16 @@
                        no++;
                       <tr>
                       <td>@no</td>
-                      <td>@item.AppUser.FullName</td>
-                      <td>@item.SaledAt.ToString("dddd, dd MMMM yyyy HH:mm:ss.fffffff")</td>
+                       @foreach (var user in Model.AppUsers)
+                      {
+                         if (item.AppUserId==user.Id)
+                        {
+                         <td>@user.FullName</td>
+                         @*break;*@
+                        }
+                      }
+                      <td>@item.SaledAt.ToString("dddd, dd MMMM yyyy HH:mm:ss.fff")</td>
                       <td>@item.OrderStatus</td>
-                      <td>@totalCount</td>
                      </tr>
                    }
                   </tbody>

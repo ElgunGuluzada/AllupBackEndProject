@@ -27,18 +27,14 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> Index()
         {
-            List<AppUser> appUser = await _userManager.Users.Include(o=>o.Orders).ToListAsync();
+            List<AppUser> users =await _userManager.Users.Include(o => o.Orders).ThenInclude(i => i.OrderItems).ToListAsync();
             OrderVM orderVM = new OrderVM();
-            foreach (var user in appUser)
-            {
-                List<Order> orders = _context.Orders.Where(a => a.AppUserId == user.Id).Include(o=>o.OrderItems).ToList();
-                 orderVM.Orders = orders;
-            }
-
+            List<Order> orders = _context.Orders.Include(u=>u.AppUser).Include(o=>o.OrderItems).ToList();
+            orderVM.Orders = orders;
+            orderVM.AppUsers = users;
             return View(orderVM);
-             
         }
     }
 }
