@@ -127,13 +127,24 @@ namespace AllupBackEndProject.Controllers
             }
             return RedirectToAction("index");
         }
-        public async Task<IActionResult> Detail (string id)
+        public async Task<IActionResult> UserDetail (string id)
         {
             AppUser dbUser = await _userManager.FindByIdAsync(id);
             List<Order> orders = await _context.Orders.Where(o => o.AppUserId == dbUser.Id).Include(i=>i.OrderItems).Where(p=>p.OrderStatus==OrderStatus.Pending).ToListAsync();
-            
-            return View(orders);
 
+            UserDetailVM userDetail = new UserDetailVM();
+            userDetail.appUser = dbUser;
+            userDetail.orders = orders;
+            
+
+            return View(userDetail);
+
+        }
+        public async Task<IActionResult> OrderDetail(int id)
+        {
+            Order order = await _context.Orders.Include(o=>o.AppUser).FirstOrDefaultAsync(p=>p.Id==id);
+            List<OrderItem> orderItems = await _context.OrderItems.Include(p=>p.Product).Where(i => i.OrderId == order.Id).ToListAsync();
+            return View(orderItems);
         }
     }
 }

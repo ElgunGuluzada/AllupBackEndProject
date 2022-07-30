@@ -42,7 +42,7 @@
                     <th>No</th>
                     <th>UserName</th>
                     <th>FullName</th>
-                    <th>Role</th>
+                    @*<th>Role</th>*@
                     <th>Setting</th>
                   </tr>
                   </thead>
@@ -63,7 +63,7 @@
                               </td>
                               <td>
                                   <a class="btn btn-secondary" asp-action="update" asp-route-id="@item.Id"> <box-icon name='edit-alt'></box-icon></a>
-                                   <a class="btn btn-primary" asp-action="detail" asp-route-id="@item.Id"> <box-icon name='message-rounded-edit'></box-icon></a>
+                                   <a class="btn btn-primary" asp-action="UserDetail" asp-route-id="@item.Id"> <box-icon name='message-rounded-edit'></box-icon></a>
                                     <a class="btn btn-danger" asp-action="delete" asp-route-id="@item.Id"><box-icon name='message-alt-x'></box-icon></a>
                               </td>
                         </tr>

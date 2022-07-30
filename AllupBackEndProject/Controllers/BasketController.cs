@@ -204,7 +204,9 @@ namespace AllupBackEndProject.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                    AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+                userName = User.Identity.Name;
+
+                AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
                     Order order = new Order();
                     order.FirstName = newOrder.FirstName;
                     order.LastName = newOrder.LastName;
@@ -217,9 +219,7 @@ namespace AllupBackEndProject.Controllers
                     order.SaledAt = DateTime.Now;
                     order.AppUserId = user.Id;
                     order.OrderStatus = OrderStatus.Pending;
-                
 
-                userName = User.Identity.Name;
                
 
                 List<BasketVM> basketProducts = JsonConvert.DeserializeObject<List<BasketVM>>(Request.Cookies[$"{userName}basket"]);

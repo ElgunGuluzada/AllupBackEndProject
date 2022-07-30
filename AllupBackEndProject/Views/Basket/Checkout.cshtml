@@ -1,5 +1,24 @@
 ﻿@model Order
-
+@{
+    double total = 0;
+    double shippingPrice = 0;
+    double finalPrice = 0;
+    double tax = 0;
+    foreach (var item in ViewBag.Products)
+    {
+        total += item.ProductCount * item.Price;
+        if (total / 100 < 3)
+        {
+            shippingPrice = 3;
+        }
+        else
+        {
+            shippingPrice = total / 100;
+        }
+        tax = total / 20;
+        finalPrice = total + shippingPrice + tax;
+    }
+}
     <section class="checkout-area pt-10">
         <div class="container-fluid custom-container">
             <div class="row">
@@ -49,7 +68,7 @@
                                     <div class="col-md-6">
                                         <div class="single-form">
                                             <label asp-for="Country">Country</label>
-                                            <select>
+                                            <select asp-for="Country">
                                                 <option value="">Azerbaijan</option>
                                                 <option value="">Bangedesh</option>
                                                 <option value="">India</option>
@@ -185,23 +204,23 @@
                             <h4 class="title">Product  <span>Total</span></h4>
                             <ul>
                                @foreach (var prod in ViewBag.Products)
-                              {
-                                   <li>
-                                    <p class="total-value">@prod.ProdName X @prod.ProductCount</p>
+                               {
+                                <li>
+                                    <p class="total-value">@prod.Name X @prod.ProductCount</p>
                                     <p class="total-amount">€@(prod.ProductCount*prod.Price)</p>
                                 </li>
                               }
                             </ul>
                             <div class="checkout-total-sub">
                                 <p class="total-value">Sub Total</p>
-                                <p class="total-amount">€0</p>
+                                <p class="total-amount">€@total</p>
                             </div>
                             <div class="checkout-total-sub">
                                 <p class="total-value">Shipping Fee </p>
-                                <p  class="total-amount">€<span id="shippingFee">0</span></p>
+                                <p  class="total-amount">€<span id="shippingFee">@shippingPrice</span></p>
                             </div>
                             <h4 class="title mt-15">Product
-                                <span>€0</span>
+                                <span>€@finalPrice</span>
                              </h4>
                         </div>
                     </div>
