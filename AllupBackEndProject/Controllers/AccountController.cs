@@ -190,7 +190,7 @@ namespace AllupBackEndProject.Controllers
             await _signInManager.SignOutAsync();
             //var curUser = await _userManager.GetUserAsync(HttpContext.User);
             //await _userManager.DeleteAsync(curUser);
-            return RedirectToAction("index", "home");
+            return RedirectToAction("login", "account");
 
         }
         public async Task CreateRole()

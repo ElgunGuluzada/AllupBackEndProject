@@ -182,7 +182,7 @@
         <div class="info">
                         <a href="#" class="d-block">@if(!User.Identity.IsAuthenticated)
                             {
-                                <span>Alma</span>
+                                <span>Null</span>
                             }
                             else
                             {
@@ -243,14 +243,40 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+           <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
               <p>
-                Widgets
-                <span class="right badge badge-danger">New</span>
+                Tables
+                <i class="fas fa-angle-left right"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a asp-controller="user" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Users</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a asp-controller="role" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Roles</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a asp-controller="order" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Orders</p>
+                </a>
+              </li>
+               <li class="nav-item">
+                <a asp-controller="brand" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Brands</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -437,35 +463,6 @@
                 <a href="pages/forms/validation.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Validation</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Tables
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Simple Tables</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="~/admin/pages/tables/data.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>DataTables</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/jsgrid.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>jsGrid</p>
                 </a>
               </li>
             </ul>

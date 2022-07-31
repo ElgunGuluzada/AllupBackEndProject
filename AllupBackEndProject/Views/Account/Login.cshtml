@@ -32,6 +32,29 @@
                                  <input asp-for="Password" class="form-control" placeholder="Password">
                                   <span style="position: absolute; top:35px" class="text-danger" asp-validation-for="Password"></span>
                             </div>
+                              @if (ViewBag.Role=="Ban")
+                                  {
+                                   <span><b class="text-danger ml-3"> @TempData["Banned"] </b> </span>
+                                  }
+                              @if (ViewBag.Email==false)
+                             {
+                                 <span style="position: absolute; z-index:1000;width: 400px; top: 40px;left: 50px">
+                                   @TempData["QalanVaxt"]
+                                  </span> 
+                             }
+                            @if (ViewBag.Failed == 1)
+                            {
+                                <span><b class="text-danger ml-3">Wrong Password!</b>You have two chance</span>
+                            }
+                            else if(ViewBag.Failed == 2){
+                                <span><b class="text-danger ml-3">Again Wrong Password !</b>You have last chance</span>
+                            }
+                            else if (ViewBag.Failed == 0)
+                            {
+                        <span style="position: absolute; z-index:1000;width: 400px; bottom: 205px;left: 50px" id="errMsg">
+                            @TempData["Error"]
+                         </span>  
+                        }
                             <div class="custom-checkbox mt-30">
                                 <input type="checkbox" id="account">
                                 <label for="account"></label>
@@ -128,6 +151,11 @@
     </section>
 
     <!--====== Features Banner Part Ends ======-->
+
+    <!-- jQuery -->
+<script src="~/admin/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
         <script>
     let eye = document.querySelectorAll(".fa-lock")

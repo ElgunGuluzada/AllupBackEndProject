@@ -226,11 +226,13 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
             List<ProductImage> images = new List<ProductImage>();
             Product dbProductName = _context.Products.FirstOrDefault(c => c.Name.ToLower().Trim() == product.Name.ToLower().Trim());
             string path = "";
+            
             if (product.Photos == null)
             {
                 foreach (var item in dbProduct.ProductImages)
                 {
                     item.ImageUrl = item.ImageUrl;
+                    _context.ProductImages.Add(item);
                 }
             }
             else
@@ -326,26 +328,66 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
                 }
                 dbProduct.ProductTags = productTags;
             }
-            if (product.OwnCategory == null)
+            if (product.Category == null && product.OwnCategory == null)
             {
-                dbProduct.CategoryId = product.CategoryId;
+                dbProduct.CategoryId = dbProduct.OwnCategory;
             }
+            else
+            {
+                dbProduct.CategoryId = product.OwnCategory;
+            }
+
+
+            if (product.StockCount==0)
+            {
+                dbProduct.IsAvailability = false;
+            }
+            List<Category> categories = _context.Categories.Where(p=>p.IsDeleted!=true).Where(c=>c.ImageUrl!=null).ToList();
+            for (int i = 0; i < categories.Count; i++)
+            {
+                if (product.Category==categories[0])
+                {
+                    dbProduct.CategoryId = dbProduct.OwnCategory;
+                }
+            }
+
             dbProduct.Name = product.Name;
             dbProduct.Price = product.Price;
             dbProduct.ProductImages = images;
 
             dbProduct.StockCount = product.StockCount;
             dbProduct.IsDeleted = false;
-            dbProduct.IsAvailability = true;
             dbProduct.IsFeatured = false;
             dbProduct.DiscountPercent = product.DiscountPercent;
             dbProduct.DiscountPrice = product.Price - (product.Price * product.DiscountPercent) / 100;
             dbProduct.BrandId = product.BrandId;
-            dbProduct.CategoryId = product.OwnCategory;
             dbProduct.TaxPercent = product.TaxPercent;
             dbProduct.Desc = product.Desc;
             dbProduct.UptadetAt = System.DateTime.Now;
             await _context.SaveChangesAsync();
+
+
+            //List<Subscriber> subscribers = await _context.Subscribers.ToListAsync();
+            //var token = "";
+            //Helper helper = new Helper(_config.GetSection("ConfirmationParameter:Email").Value, _config.GetSection("ConfirmationParameter:Password").Value);
+            //foreach (var subscriber in subscribers)
+            //{
+            //    if (dbProduct.DiscountPrice / product.Price == 2)
+            //    {
+            //        token = $" Mehsulun qiymeti 50% Endirildi https://preview.themeforest.net/item/allup-electronics-ecommerce-html5-template/full_screen_preview/27042714?_ga=2.98090911.1817295916.1659218963-1275575051.1654878103&_gac=1.53084506.1657637222.CjwKCAjwt7SWBhAnEiwAx8ZLaqavzy2p1AcQEh_emgIhVWjEcAPZTJRguybkfDIygO_xWE2VdK6vvhoChPYQAvD_BwE ";
+            //        var emailResult = helper.DiscountPrice(subscriber.Email, token);
+            //    }
+            //    else if (dbProduct.DiscountPrice / product.Price < 2)
+            //    {
+            //        token = $" Mehsulun qiymeti 50% daha artiq Endirildi https://preview.themeforest.net/item/allup-electronics-ecommerce-html5-template/full_screen_preview/27042714?_ga=2.98090911.1817295916.1659218963-1275575051.1654878103&_gac=1.53084506.1657637222.CjwKCAjwt7SWBhAnEiwAx8ZLaqavzy2p1AcQEh_emgIhVWjEcAPZTJRguybkfDIygO_xWE2VdK6vvhoChPYQAvD_BwE ";
+            //        var emailResult = helper.DiscountPrice(subscriber.Email, token);
+            //    }
+            //    continue;
+            //}
+            //string confirmation = Url.Action("ConfirmEmail", "Account", new
+            //{
+            //    token
+            //}, Request.Scheme);
 
             return RedirectToAction("Index");
         }
