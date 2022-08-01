@@ -10,6 +10,7 @@ using AllupBackEndProject.Helpers;
 using Microsoft.Extensions.Configuration;
 using AllupBackEndProject.DAL;
 using System.Linq;
+using AllupBackEndProject.Services;
 
 namespace AllupBackEndProject.Controllers
 {
@@ -21,6 +22,8 @@ namespace AllupBackEndProject.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IConfiguration _config;
         private readonly AppDbContext _context;
+        private static string pass;
+        private static string UserID;
 
         public AccountController(UserManager<AppUser> userManager, RoleManager<IdentityRole> rolemanager, SignInManager<AppUser> signInManager, IConfiguration config, AppDbContext context)
         {
@@ -39,7 +42,7 @@ namespace AllupBackEndProject.Controllers
             }
             return View();
         }
-
+        
         public IActionResult Register()
         {
             ViewBag.brand = _context.Brands.Where(b => b.IsDeleted != true).ToList();
@@ -62,7 +65,6 @@ namespace AllupBackEndProject.Controllers
                 UserCreateTime = now,
                 ConfirmMailTime = confirm,
             };
-
             IdentityResult result = await _userManager.CreateAsync(user, registerVM.Password);
             if (!result.Succeeded)
             {
@@ -75,22 +77,24 @@ namespace AllupBackEndProject.Controllers
 
             await _userManager.AddToRoleAsync(user, UserRoles.Member.ToString());
 
-
-            string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            Random rand = new Random();
+            int minValue = 100000;
+            int maxValue = 999999;
+            string confirmPass = "U-" + rand.Next(minValue,maxValue);
+            pass = confirmPass;
+            ViewBag.ConfirmPass = confirmPass;
+            string message = $"Confirm Password: {confirmPass}";
+            UserID = registerVM.Email;
             string confirmation = Url.Action("ConfirmEmail", "Account", new
             {
-                token,
-                Email = registerVM.Email
+                message
             }, Request.Scheme);
 
             Helper helper = new Helper(_config.GetSection("ConfirmationParameter:Email").Value, _config.GetSection("ConfirmationParameter:Password").Value);
-            var emailResult = helper.SendEmail(registerVM.Email, confirmation);
-            if (!emailResult)
-            {
-                return View(registerVM);
-            }
+            var emailResult = helper.SendEmail(registerVM.Email, message);
 
-            return RedirectToAction("login", "account");
+            return RedirectToAction("confirmPass");
         }
 
         public IActionResult Login()
@@ -181,7 +185,6 @@ namespace AllupBackEndProject.Controllers
             {
                 return Redirect(ReturnUrl);
             }
-
             return View();
         }
 
@@ -210,6 +213,29 @@ namespace AllupBackEndProject.Controllers
             var result = await _userManager.ConfirmEmailAsync(user, token);
 
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
+        }
+
+        public IActionResult ConfirmPass()
+        {
+            ViewBag.brand = _context.Brands.Where(b=>b.IsDeleted!=true).ToList();
+            return View();
+        }   
+            
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmPass(LoginVM val)
+        {
+            ViewBag.brand = _context.Brands.Where(b => b.IsDeleted != true).ToList();
+            AppUser appUser = await _userManager.FindByEmailAsync(UserID);
+
+            if (val.Password == pass) 
+            {
+                appUser.EmailConfirmed = true;
+                await  _userManager.UpdateAsync(appUser);
+                return RedirectToAction("Login");
+            }
+            TempData["WrongPass"] = "Wrong Password";
+            return View();
         }
     }
 }

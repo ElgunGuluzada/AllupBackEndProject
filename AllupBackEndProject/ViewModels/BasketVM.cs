@@ -1,4 +1,7 @@
-﻿namespace AllupBackEndProject.ViewModels
+﻿using AllupBackEndProject.Models;
+using System.Collections.Generic;
+
+namespace AllupBackEndProject.ViewModels
 {
     public class BasketVM
     {

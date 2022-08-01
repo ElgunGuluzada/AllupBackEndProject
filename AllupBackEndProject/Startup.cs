@@ -1,5 +1,6 @@
 using AllupBackEndProject.DAL;
 using AllupBackEndProject.Models;
+using AllupBackEndProject.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,7 +29,7 @@ namespace AllupBackEndProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
+            services.AddScoped<ICategory, CategoryService>();
             services.AddDbContext<AppDbContext>(option =>
             {
                 option.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
@@ -74,6 +75,8 @@ namespace AllupBackEndProject
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            
 
             app.UseEndpoints(endpoints =>
             {

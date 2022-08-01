@@ -4,7 +4,9 @@
     double shippingPrice = 0;
     double finalPrice = 0;
     double tax = 0;
-    foreach (var item in ViewBag.Products)
+   if (ViewBag.Products!=null)
+   {
+        foreach (var item in ViewBag.Products)
     {
         total += item.ProductCount * item.Price;
         if (total / 100 < 3)
@@ -18,6 +20,7 @@
         tax = total / 20;
         finalPrice = total + shippingPrice + tax;
     }
+   }
 }
     <section class="checkout-area pt-10">
         <div class="container-fluid custom-container">
@@ -203,14 +206,21 @@
                         <div class="checkout-total mt-30">
                             <h4 class="title">Product  <span>Total</span></h4>
                             <ul>
-                               @foreach (var prod in ViewBag.Products)
+                              @if (ViewBag.Products!=null)
+                             {
+                                  @foreach (var prod in ViewBag.Products)
                                {
                                 <li>
                                     <p class="total-value">@prod.Name X @prod.ProductCount</p>
                                     <p class="total-amount">€@(prod.ProductCount*prod.Price)</p>
                                 </li>
-                              }
-                            </ul>
+                                }
+                            }
+                            else
+                            {
+                                 <h4></h4>
+                            }
+                        </ul>
                             <div class="checkout-total-sub">
                                 <p class="total-value">Sub Total</p>
                                 <p class="total-amount">€@total</p>

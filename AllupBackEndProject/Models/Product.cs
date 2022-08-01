@@ -17,6 +17,7 @@ namespace AllupBackEndProject.Models
         public double TaxPercent { get; set; }
         public double DiscountPercent { get; set; }
         public int StockCount { get; set; }
+        public int SaleCount { get; set; }
         public string Desc { get; set; }
 
         [NotMapped]

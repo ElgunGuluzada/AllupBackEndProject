@@ -11,8 +11,7 @@
     {
         count = item.ProductCount;
         price = item.Price;
-    }
-    subTotal += (price * count);
+        subTotal += (price * count);
     if (subTotal/100<3)
     {
         shipping = 3;
@@ -23,12 +22,13 @@
     }
     tax = subTotal / 20;
     total = tax + shipping + subTotal;
+    }
 }
-@foreach (var item in Model)
-   {
+
  <div class="mini-cart">
      <ul class="cart-items">
-       
+      @foreach (var item in Model)
+   { 
             <li>
              <div class="single-cart-item d-flex">
                  <div class="cart-item-thumb">
@@ -42,7 +42,7 @@
                  </div>
              </div>
          </li>
-    
+      }
      </ul>
      <div class="price_content">
          <div class="cart-subtotals">
@@ -69,4 +69,3 @@
          <a  asp-controller="basket" asp-action="checkout" class="main-btn">Checkout</a>
      </div>
  </div> <!-- mini cart -->
-      }

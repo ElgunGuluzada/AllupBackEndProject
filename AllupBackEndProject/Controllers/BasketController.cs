@@ -243,6 +243,11 @@ namespace AllupBackEndProject.Controllers
                     total += basketProduct.ProductCount * dbProduct.Price;
 
                     dbProduct.StockCount = dbProduct.StockCount - basketProduct.ProductCount;
+                    dbProduct.SaleCount += basketProduct.ProductCount;
+                    if (dbProduct.SaleCount>=50)
+                    {
+                        dbProduct.BestSeller = true;
+                    }
                 }
                 order.OrderItems = orderItems;
                 order.TotalPrice = total;
@@ -273,8 +278,10 @@ namespace AllupBackEndProject.Controllers
             if (basket != null)
             {
                 products = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
-                ViewBag.Products = products;
-
+                if (products!=null)
+                {
+                    ViewBag.Products = products;
+                }
                 foreach (var item in products)
                 {
                     Product dbProduct = _context.Products
@@ -299,3 +306,7 @@ namespace AllupBackEndProject.Controllers
         }
     }
 }
+
+
+
+

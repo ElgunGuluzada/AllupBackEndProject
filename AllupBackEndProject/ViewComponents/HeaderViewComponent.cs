@@ -1,5 +1,6 @@
 ﻿using AllupBackEndProject.DAL;
 using AllupBackEndProject.Models;
+using AllupBackEndProject.Services;
 using AllupBackEndProject.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +15,12 @@ namespace AllupBackEndProject.ViewComponents
     {
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
-        public HeaderViewComponent(AppDbContext context, UserManager<AppUser> userManager)
+        private readonly ICategory _category;
+
+        public HeaderViewComponent(AppDbContext context,ICategory category,UserManager<AppUser> userManager)
         {
             _context = context;
+            _category = category;
             _userManager = userManager;
         }
         public async Task<IViewComponentResult> InvokeAsync()
@@ -56,6 +60,7 @@ namespace AllupBackEndProject.ViewComponents
                     total += totalPrice;
                 }
             }
+            ViewBag.Categories = _category.Category();
             ViewBag.BasketCount = totalCount;
             ViewBag.TotalPrice = totalPrice;
             Bio bio = _context.Bios.FirstOrDefault();

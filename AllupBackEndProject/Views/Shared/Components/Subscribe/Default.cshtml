@@ -8,32 +8,32 @@
 
 
  <script>
-   //let Btn = document.getElementById("send")
-   //let email= document.getElementById("email")
-   //Btn.onclick = function(ev){
-   //    ev.preventDefault();
-   //    console.log(email.value)
+   let Btn = document.getElementById("send")
+   let email= document.getElementById("email")
+   Btn.onclick = function(ev){
+       ev.preventDefault();
+       console.log(email.value)
 
-//       var body = {
-//    Email: email.value }
+       var body = {
+    Email: email.value }
 
-//axios({
-//    method: 'post',
-//    url: '/subscribe/form',
-//    data: body
-//})
-//.then(function (response) {
-//     swal({
-//              title: "Thanks for Subscribe!",
-//              text: "We will send all news!",
-//              icon: "success",
-//          });
-//    console.log(response);
-//})
-//.catch(function (error) {
-//    console.log(error);
-//});
-//}
+axios({
+    method: 'post',
+    url: '/subscribe/form',
+    data: body
+})
+.then(function (response) {
+     swal({
+              title: "Thanks for Subscribe!",
+              text: "We will send all news!",
+              icon: "success",
+          });
+    console.log(response);
+})
+.catch(function (error) {
+    console.log(error);
+});
+}
 </script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

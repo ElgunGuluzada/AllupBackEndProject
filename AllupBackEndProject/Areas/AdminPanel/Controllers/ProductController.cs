@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -119,6 +120,12 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
 
             if (!ModelState.IsValid) return View();
 
+         
+            string code = "";
+            Random random = new Random();
+           int numb = random.Next(1000,9999);
+            code = product.Name.Substring(0,4) + numb;
+
             Product newProduct = new Product
             {
                 Name = product.Name,
@@ -127,14 +134,28 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
                 StockCount = product.StockCount,
                 IsDeleted = false,
                 IsAvailability = true,
-                IsFeatured = false,
                 DiscountPercent = product.DiscountPercent,
                 DiscountPrice = product.Price - (product.Price * product.DiscountPercent) / 100,
                 BrandId = product.BrandId,
-                TaxPercent = product.TaxPercent,
+                TaxPercent = 5,
                 Desc = product.Desc,
+                SaleCount = 0,
                 CreatedAt = System.DateTime.Now
+                
             };
+            if (product.DiscountPercent==0)
+            {
+                newProduct.IsFeatured = true;
+            }
+
+            List<Product> products = _context.Products.Where(c => c.IsDeleted != true).ToList();
+            foreach (var item in products)
+            {
+                if (item.ProductCode!=code)
+                {
+                    newProduct.ProductCode = code;
+                }
+            }
             if (product.OwnCategory == null)
             {
                 newProduct.CategoryId = product.CategoryId;
@@ -192,6 +213,7 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
                 .ThenInclude(t => t.Tag)
                 .Include(b => b.Brand)
                 .Include(c => c.Category)
+                .Include(c=>c.Category.Children)
                 .FirstOrDefaultAsync(b => b.Id == id);
 
             if (dbProduct == null) return NotFound();
@@ -208,17 +230,24 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
             ViewBag.ProductBrands = new SelectList(_context.Brands.Where(p => p.IsDeleted != true).ToList(), "Id", "Name");
             ViewBag.mainCategories = new SelectList((mainCategories).ToList(), "Id", "Name");
             ViewBag.Tags = new SelectList(tags.Where(p => p.IsDeleted != true).ToList(), "Id", "Name");
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
+          
             Product dbProduct = await _context.Products
                 .Include(p => p.ProductImages)
                 .Include(p => p.ProductTags)
                 .ThenInclude(t => t.Tag)
                 .Include(b => b.Brand)
                 .Include(c => c.Category)
+                .Include(c => c.Category.Children)
                 .FirstOrDefaultAsync(b => b.Id == product.Id);
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(e => e.Errors);
+                foreach (var item in errors)
+                {
+                    ModelState.AddModelError($"{item.Exception}", item.ErrorMessage);
+                }
+                return View(dbProduct);
+            }
             if (dbProduct == null)
             {
                 return View();
@@ -231,7 +260,6 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
             {
                 foreach (var item in dbProduct.ProductImages)
                 {
-                    item.ImageUrl = item.ImageUrl;
                     _context.ProductImages.Add(item);
                 }
             }
@@ -328,15 +356,11 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
                 }
                 dbProduct.ProductTags = productTags;
             }
-            if (product.Category == null && product.OwnCategory == null)
+            if (product.DiscountPercent==dbProduct.DiscountPercent && dbProduct.DiscountPercent == 0)
             {
-                dbProduct.CategoryId = dbProduct.OwnCategory;
+                dbProduct.IsFeatured = false;
+                dbProduct.IsSpecial = true;
             }
-            else
-            {
-                dbProduct.CategoryId = product.OwnCategory;
-            }
-
 
             if (product.StockCount==0)
             {
@@ -345,20 +369,20 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
             List<Category> categories = _context.Categories.Where(p=>p.IsDeleted!=true).Where(c=>c.ImageUrl!=null).ToList();
             for (int i = 0; i < categories.Count; i++)
             {
-                if (product.Category==categories[0])
+                if (product.Category == null && product.OwnCategory == 0)
                 {
-                    dbProduct.CategoryId = dbProduct.OwnCategory;
+                    dbProduct.CategoryId = dbProduct.CategoryId;
+                }
+                else if (product.OwnCategory != 0)
+                {
+                    dbProduct.CategoryId = product.OwnCategory;
                 }
             }
-
             dbProduct.Name = product.Name;
             dbProduct.Price = product.Price;
             dbProduct.ProductImages = images;
 
             dbProduct.StockCount = product.StockCount;
-            dbProduct.IsDeleted = false;
-            dbProduct.IsFeatured = false;
-            dbProduct.DiscountPercent = product.DiscountPercent;
             dbProduct.DiscountPrice = product.Price - (product.Price * product.DiscountPercent) / 100;
             dbProduct.BrandId = product.BrandId;
             dbProduct.TaxPercent = product.TaxPercent;
@@ -367,28 +391,36 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
             await _context.SaveChangesAsync();
 
 
-            //List<Subscriber> subscribers = await _context.Subscribers.ToListAsync();
-            //var token = "";
-            //Helper helper = new Helper(_config.GetSection("ConfirmationParameter:Email").Value, _config.GetSection("ConfirmationParameter:Password").Value);
-            //foreach (var subscriber in subscribers)
-            //{
-            //    if (dbProduct.DiscountPrice / product.Price == 2)
-            //    {
-            //        token = $" Mehsulun qiymeti 50% Endirildi https://preview.themeforest.net/item/allup-electronics-ecommerce-html5-template/full_screen_preview/27042714?_ga=2.98090911.1817295916.1659218963-1275575051.1654878103&_gac=1.53084506.1657637222.CjwKCAjwt7SWBhAnEiwAx8ZLaqavzy2p1AcQEh_emgIhVWjEcAPZTJRguybkfDIygO_xWE2VdK6vvhoChPYQAvD_BwE ";
-            //        var emailResult = helper.DiscountPrice(subscriber.Email, token);
-            //    }
-            //    else if (dbProduct.DiscountPrice / product.Price < 2)
-            //    {
-            //        token = $" Mehsulun qiymeti 50% daha artiq Endirildi https://preview.themeforest.net/item/allup-electronics-ecommerce-html5-template/full_screen_preview/27042714?_ga=2.98090911.1817295916.1659218963-1275575051.1654878103&_gac=1.53084506.1657637222.CjwKCAjwt7SWBhAnEiwAx8ZLaqavzy2p1AcQEh_emgIhVWjEcAPZTJRguybkfDIygO_xWE2VdK6vvhoChPYQAvD_BwE ";
-            //        var emailResult = helper.DiscountPrice(subscriber.Email, token);
-            //    }
-            //    continue;
-            //}
-            //string confirmation = Url.Action("ConfirmEmail", "Account", new
-            //{
-            //    token
-            //}, Request.Scheme);
-
+            List<Subscriber> subscribers = await _context.Subscribers.ToListAsync();
+            var token = "";
+            Helper helper = new Helper(_config.GetSection("ConfirmationParameter:Email").Value, _config.GetSection("ConfirmationParameter:Password").Value);
+            foreach (var subscriber in subscribers)
+            {
+                if (product.DiscountPercent / dbProduct.DiscountPercent > 2)
+                {
+                    token = $" Sezon Sonu Kompaniyasina Dusen bu mehsulumuzun qiymeti indi {dbProduct.DiscountPercent - product.DiscountPercent}% Endirimde !! https://preview.themeforest.net/item/allup-electronics-ecommerce-html5-template/full_screen_preview/27042714?_ga=2.98090911.1817295916.1659218963-1275575051.1654878103&_gac=1.53084506.1657637222.CjwKCAjwt7SWBhAnEiwAx8ZLaqavzy2p1AcQEh_emgIhVWjEcAPZTJRguybkfDIygO_xWE2VdK6vvhoChPYQAvD_BwE ";
+                    var emailResult = helper.DiscountPrice(subscriber.Email, token);
+                    continue;
+                }
+                else if (product.DiscountPercent / dbProduct.DiscountPercent == 2)
+                {
+                    token = $" Mehsulun qiymeti 50% Endirildi https://preview.themeforest.net/item/allup-electronics-ecommerce-html5-template/full_screen_preview/27042714?_ga=2.98090911.1817295916.1659218963-1275575051.1654878103&_gac=1.53084506.1657637222.CjwKCAjwt7SWBhAnEiwAx8ZLaqavzy2p1AcQEh_emgIhVWjEcAPZTJRguybkfDIygO_xWE2VdK6vvhoChPYQAvD_BwE ";
+                    var emailResult = helper.DiscountPrice(subscriber.Email, token);
+                    continue;
+                }
+                else if(product.DiscountPercent > dbProduct.DiscountPercent)
+                {
+                    token = $"Mehsulun qiymeti {dbProduct.DiscountPercent - product.DiscountPercent}% daha endirildi";
+                    var emailResult = helper.DiscountPrice(subscriber.Email, token);
+                    continue;
+                }
+                continue;
+            }
+            string confirmation = Url.Action("ConfirmEmail", "Account", new
+            {
+                token
+            }, Request.Scheme);
+            dbProduct.DiscountPercent = product.DiscountPercent;
             return RedirectToAction("Index");
         }
         public IActionResult LoadSubCategory(int id)
