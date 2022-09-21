@@ -39,7 +39,7 @@
                                         </ul>
                                     </div>
                                     <div class="shop-header-message">
-                                        <p>Showing 1 to 9 of 15 (2 Pages)</p>
+                                        <p>Showing 1 to 9 of @Model.Items.Count (@(@Model.Items.Count/9)Pages)</p>
                                     </div>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                             <div class="row">
                                 @foreach (var item in Model.Items)
                                {
-                                   <div class="col-xl-3 col-md-4 col-sm-6">
+                                   <div class="col-xl-4 col-md-6 col-sm-12">
                                     <div class="single-product mt-30">
                                         <div class="product-image">
                                             <a asp-action="detail" asp-route-id="@item.Id">
@@ -80,11 +80,13 @@
                                                 {
                                                     if (image.IsMain)
                                                     {
-                                                        <img width="200" height="220" class="first-image" src="~/assets/images/product/@image.ImageUrl" alt="product">
+
+                                                        <img width="300" height="320" class="first-image" src="~/assets/images/product/@image.ImageUrl" alt="product">
                                                     }
                                                     else
                                                     {
-                                                        <img width="200" height="220" class="second-image" src="~/assets/images/product/@image.ImageUrl" alt="product">
+                                                        <img width="300" height="320" class="second-image" src="~/assets/images/product/@image.ImageUrl" alt="product">
+                                                        break;
                                                     }
                                                 }
                                             </a>
@@ -126,15 +128,30 @@
                             </div> <!-- row -->
                         </div>
                         <div class="tab-pane fade" id="list" role="tabpanel" aria-labelledby="list-tab">
-                            <div class="single-product-list mt-30">
+                         @foreach (var item in Model.Items)
+                        {
+                             <div class="single-product-list mt-30">
                                 <div class="row">
                                     <div class="col-sm-5 col-xl-3">
                                         <div class="product-image">
                                             <a href="single-product.html">
-                                                <img class="first-image" src="~/assets/images/product/product-3.jpg" alt="product">
-                                                <img class="second-image" src="~/assets/images/product/product-4.jpg" alt="product">
+                                           @foreach (var prodImg in item.ProductImages)
+                                          {
+                                              if (prodImg.IsMain)
+                                              {
+                                                        <img class="first-image" src="~/assets/images/product/@prodImg.ImageUrl" alt="product">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="second-image" src="~/assets/images/product/@prodImg.ImageUrl" alt="product">
+                                                        break;
+                                                    }
+                                                }
                                             </a>
-                                            <span class="discount-product">-12%</span>
+                                            @if (item.DiscountPercent>0)
+                                           {
+                                            <span class="discount-product">-@item.DiscountPercent%</span>
+                                           }
                                         </div>
                                     </div>
                                     <div class="col-sm-7 col-xl-9">
@@ -147,12 +164,19 @@
                                                 <li class="rating-on"><i class="fas fa-star"></i></li>
                                             </ul>
                                             <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                            <span class="availability">Availability: 299 In Stock</span>
+                                            <span class="availability">Availability: @item.StockCount In Stock</span>
                                             <div class="product-price">
-                                                <span class="regular-price">€23.90</span>
-                                                <span class="price-sale">€21.90</span>
+                                                @if (item.DiscountPercent>0)
+                                               {
+                                                <span class="regular-price">€@item.Price</span>
+                                                <span class="price-sale">€@item.DiscountPrice</span>
+                                               }
+                                               else 
+                                               {
+                                                <span class="price-sale">€@item.Price</span>
+                                               }
                                             </div>
-                                            <p> Block out the haters with the fresh adidas® Originals Kaval Windbreaker Jacket. Part of the Kaval Collection. Regular fit is eased, but not sloppy, and perfect for any activity. Plain-woven jacket specifically constructed for freedom of movement. </p>
+                                            <p>@item.Desc</p>
                                             <ul class="product-meta">
                                                 <li><a href="#"><i class="icon ion-bag"></i></a></li>
                                                 <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
@@ -163,387 +187,7 @@
                                     </div>
                                 </div>
                             </div> <!-- single product List -->
-                            <div class="single-product-list mt-30">
-                                <div class="row">
-                                    <div class="col-sm-5 col-xl-3">
-                                        <div class="product-image">
-                                            <a href="single-product.html">
-                                                <img class="first-image" src="~/assets/images/product/product-12.jpg" alt="product">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7 col-xl-9">
-                                        <div class="product-content">
-                                            <ul class="product-rating">
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                            <span class="availability">Availability: 299 In Stock</span>
-                                            <div class="product-price">
-                                                <span class="price-sale">€21.90</span>
-                                            </div>
-                                            <p> Block out the haters with the fresh adidas® Originals Kaval Windbreaker Jacket. Part of the Kaval Collection. Regular fit is eased, but not sloppy, and perfect for any activity. Plain-woven jacket specifically constructed for freedom of movement. </p>
-                                            <ul class="product-meta">
-                                                <li><a href="#"><i class="icon ion-bag"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                                <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- single product List -->
-                            <div class="single-product-list mt-30">
-                                <div class="row">
-                                    <div class="col-sm-5 col-xl-3">
-                                        <div class="product-image">
-                                            <a href="single-product.html">
-                                                <img class="first-image" src="~/assets/images/product/product-4.jpg" alt="product">
-                                                <img class="second-image" src="~/assets/images/product/product-9.jpg" alt="product">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7 col-xl-9">
-                                        <div class="product-content">
-                                            <ul class="product-rating">
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                            <span class="availability">Availability: 299 In Stock</span>
-                                            <div class="product-price">
-                                                <span class="price-sale">€21.90</span>
-                                            </div>
-                                            <p> Block out the haters with the fresh adidas® Originals Kaval Windbreaker Jacket. Part of the Kaval Collection. Regular fit is eased, but not sloppy, and perfect for any activity. Plain-woven jacket specifically constructed for freedom of movement. </p>
-                                            <ul class="product-meta">
-                                                <li><a href="#"><i class="icon ion-bag"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                                <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- single product List -->
-                            <div class="single-product-list mt-30">
-                                <div class="row">
-                                    <div class="col-sm-5 col-xl-3">
-                                        <div class="product-image">
-                                            <a href="single-product.html">
-                                                <img class="first-image" src="~/assets/images/product/product-9.jpg" alt="product">
-                                            </a>
-                                            <span class="discount-product">-12%</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7 col-xl-9">
-                                        <div class="product-content">
-                                            <ul class="product-rating">
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                            <span class="availability">Availability: 299 In Stock</span>
-                                            <div class="product-price">
-                                                <span class="regular-price">€23.90</span>
-                                                <span class="price-sale">€21.90</span>
-                                            </div>
-                                            <p> Block out the haters with the fresh adidas® Originals Kaval Windbreaker Jacket. Part of the Kaval Collection. Regular fit is eased, but not sloppy, and perfect for any activity. Plain-woven jacket specifically constructed for freedom of movement. </p>
-                                            <ul class="product-meta">
-                                                <li><a href="#"><i class="icon ion-bag"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                                <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- single product List -->
-                            <div class="single-product-list mt-30">
-                                <div class="row">
-                                    <div class="col-sm-5 col-xl-3">
-                                        <div class="product-image">
-                                            <a href="single-product.html">
-                                                <img class="first-image" src="~/assets/images/product/product-17.jpg" alt="product">
-                                                <img class="second-image" src="~/assets/images/product/product-5.jpg" alt="product">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7 col-xl-9">
-                                        <div class="product-content">
-                                            <ul class="product-rating">
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                            <span class="availability">Availability: 299 In Stock</span>
-                                            <div class="product-price">
-                                                <span class="price-sale">€21.90</span>
-                                            </div>
-                                            <p> Block out the haters with the fresh adidas® Originals Kaval Windbreaker Jacket. Part of the Kaval Collection. Regular fit is eased, but not sloppy, and perfect for any activity. Plain-woven jacket specifically constructed for freedom of movement. </p>
-                                            <ul class="product-meta">
-                                                <li><a href="#"><i class="icon ion-bag"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                                <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- single product List -->
-                            <div class="single-product-list mt-30">
-                                <div class="row">
-                                    <div class="col-sm-5 col-xl-3">
-                                        <div class="product-image">
-                                            <a href="single-product.html">
-                                                <img class="first-image" src="~/assets/images/product/product-5.jpg" alt="product">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7 col-xl-9">
-                                        <div class="product-content">
-                                            <ul class="product-rating">
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                            <span class="availability">Availability: 299 In Stock</span>
-                                            <div class="product-price">
-                                                <span class="price-sale">€21.90</span>
-                                            </div>
-                                            <p> Block out the haters with the fresh adidas® Originals Kaval Windbreaker Jacket. Part of the Kaval Collection. Regular fit is eased, but not sloppy, and perfect for any activity. Plain-woven jacket specifically constructed for freedom of movement. </p>
-                                            <ul class="product-meta">
-                                                <li><a href="#"><i class="icon ion-bag"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                                <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- single product List -->
-                            <div class="single-product-list mt-30">
-                                <div class="row">
-                                    <div class="col-sm-5 col-xl-3">
-                                        <div class="product-image">
-                                            <a href="single-product.html">
-                                                <img class="first-image" src="~/assets/images/product/product-17.jpg" alt="product">
-                                                <img class="second-image" src="~/assets/images/product/product-6.jpg" alt="product">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7 col-xl-9">
-                                        <div class="product-content">
-                                            <ul class="product-rating">
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                            <span class="availability">Availability: 299 In Stock</span>
-                                            <div class="product-price">
-                                                <span class="price-sale">€21.90</span>
-                                            </div>
-                                            <p> Block out the haters with the fresh adidas® Originals Kaval Windbreaker Jacket. Part of the Kaval Collection. Regular fit is eased, but not sloppy, and perfect for any activity. Plain-woven jacket specifically constructed for freedom of movement. </p>
-                                            <ul class="product-meta">
-                                                <li><a href="#"><i class="icon ion-bag"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                                <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- single product List -->
-                            <div class="single-product-list mt-30">
-                                <div class="row">
-                                    <div class="col-sm-5 col-xl-3">
-                                        <div class="product-image">
-                                            <a href="single-product.html">
-                                                <img class="first-image" src="~/assets/images/product/product-6.jpg" alt="product">
-                                                <img class="second-image" src="~/assets/images/product/product-7.jpg" alt="product">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7 col-xl-9">
-                                        <div class="product-content">
-                                            <ul class="product-rating">
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                            <span class="availability">Availability: 299 In Stock</span>
-                                            <div class="product-price">
-                                                <span class="price-sale">€21.90</span>
-                                            </div>
-                                            <p> Block out the haters with the fresh adidas® Originals Kaval Windbreaker Jacket. Part of the Kaval Collection. Regular fit is eased, but not sloppy, and perfect for any activity. Plain-woven jacket specifically constructed for freedom of movement. </p>
-                                            <ul class="product-meta">
-                                                <li><a href="#"><i class="icon ion-bag"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                                <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- single product List -->
-                            <div class="single-product-list mt-30">
-                                <div class="row">
-                                    <div class="col-sm-5 col-xl-3">
-                                        <div class="product-image">
-                                            <a href="single-product.html">
-                                                <img class="first-image" src="~/assets/images/product/product-13.jpg" alt="product">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7 col-xl-9">
-                                        <div class="product-content">
-                                            <ul class="product-rating">
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                            <span class="availability">Availability: 299 In Stock</span>
-                                            <div class="product-price">
-                                                <span class="price-sale">€21.90</span>
-                                            </div>
-                                            <p> Block out the haters with the fresh adidas® Originals Kaval Windbreaker Jacket. Part of the Kaval Collection. Regular fit is eased, but not sloppy, and perfect for any activity. Plain-woven jacket specifically constructed for freedom of movement. </p>
-                                            <ul class="product-meta">
-                                                <li><a href="#"><i class="icon ion-bag"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                                <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- single product List -->
-                            <div class="single-product-list mt-30">
-                                <div class="row">
-                                    <div class="col-sm-5 col-xl-3">
-                                        <div class="product-image">
-                                            <a href="single-product.html">
-                                                <img class="first-image" src="~/assets/images/product/product-8.jpg" alt="product">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7 col-xl-9">
-                                        <div class="product-content">
-                                            <ul class="product-rating">
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                            <div class="product-price">
-                                                <span class="regular-price">€23.90</span>
-                                                <span class="price-sale">€21.90</span>
-                                            </div>
-                                            <p> Block out the haters with the fresh adidas® Originals Kaval Windbreaker Jacket. Part of the Kaval Collection. Regular fit is eased, but not sloppy, and perfect for any activity. Plain-woven jacket specifically constructed for freedom of movement. </p>
-                                            <ul class="product-meta">
-                                                <li><a href="#"><i class="icon ion-bag"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                                <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- single product List -->
-                            <div class="single-product-list mt-30">
-                                <div class="row">
-                                    <div class="col-sm-5 col-xl-3">
-                                        <div class="product-image">
-                                            <a href="single-product.html">
-                                                <img class="first-image" src="~/assets/images/product/product-14.jpg" alt="product">
-                                                <img class="second-image" src="~/assets/images/product/product-15.jpg" alt="product">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7 col-xl-9">
-                                        <div class="product-content">
-                                            <ul class="product-rating">
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                            <span class="availability">Availability: 299 In Stock</span>
-                                            <div class="product-price">
-                                                <span class="price-sale">€21.90</span>
-                                            </div>
-                                            <p> Block out the haters with the fresh adidas® Originals Kaval Windbreaker Jacket. Part of the Kaval Collection. Regular fit is eased, but not sloppy, and perfect for any activity. Plain-woven jacket specifically constructed for freedom of movement. </p>
-                                            <ul class="product-meta">
-                                                <li><a href="#"><i class="icon ion-bag"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                                <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- single product List -->
-                            <div class="single-product-list mt-30">
-                                <div class="row">
-                                    <div class="col-sm-5 col-xl-3">
-                                        <div class="product-image">
-                                            <a href="single-product.html">
-                                                <img class="first-image" src="~/assets/images/product/product-11.jpg" alt="product">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7 col-xl-9">
-                                        <div class="product-content">
-                                            <ul class="product-rating">
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                                <li class="rating-on"><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <h4 class="product-title"><a href="single-product.html">Cale 6 eu accumsan massa facilisis Madden by Steve</a></h4>
-                                            <span class="availability">Availability: 299 In Stock</span>
-                                            <div class="product-price">
-                                                <span class="price-sale">€21.90</span>
-                                            </div>
-                                            <p> Block out the haters with the fresh adidas® Originals Kaval Windbreaker Jacket. Part of the Kaval Collection. Regular fit is eased, but not sloppy, and perfect for any activity. Plain-woven jacket specifically constructed for freedom of movement. </p>
-                                            <ul class="product-meta">
-                                                <li><a href="#"><i class="icon ion-bag"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
-                                                <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                                <li><a data-toggle="modal" data-target="#productQuickModal" href="#"><i class="icon ion-android-open"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- single product List -->
+                        }
                         </div>
                     </div> <!-- Tab Content -->
 

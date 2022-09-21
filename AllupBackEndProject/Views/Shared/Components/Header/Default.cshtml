@@ -71,7 +71,7 @@
                             <div class="header-logo-contact d-flex  ">
                                 <div class="desktop-logo">
                                     <a href="index.html">
-                                        <img src="~/assets/images/@Model.Logo" alt="Logo">
+                                        <img width="300" height="120" src="~/assets/images/flag//New-removebg-preview.png" alt="Logo">
                                     </a>
                                 </div> <!-- desktop logo -->
                             </div>
@@ -167,7 +167,7 @@
                         <div class="col-lg-9 position-static">
                             <div class="header-horizontal-menu">
                                 <ul class="menu-content">
-                                    <li class="active"><a href="#">Home <i class="fal fa-chevron-down"></i></a>
+                                    <li class="active"><a asp-controller="home" asp-action="index">Home <i class="fal fa-chevron-down"></i></a>
                                         <ul class="sub-menu">
                                             <li><a href="index.html">Home 01</a></li>
                                             <li><a href="index-2.html">Home 02</a></li>
@@ -202,7 +202,7 @@
                                             <li>
                                                 <a class="menu-title" href="#">Shop List</a>
                                                 <ul class="submenu-item">
-                                                    <li><a href="shop-list.html">Shop List</a></li>
+                                                    <li><a asp-controller="home" asp-action="shop">Shop List</a></li>
                                                     <li><a href="shop-list-left-sidebar.html">Shop List Left sidebar</a></li>
                                                     <li><a href="shop-list-right-sidebar.html">Shop List Right sidebar</a></li>
                                                 </ul>

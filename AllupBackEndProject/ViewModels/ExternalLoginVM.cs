@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AllupBackEndProject.Models
+namespace AllupBackEndProject.ViewModels
 {
-    public class Subscriber
+    public class ExternalLoginVM
     {
-        public int Id { get; set; }
         [Required, DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+        [Required]
+        public string Username { get; set; }
     }
 }

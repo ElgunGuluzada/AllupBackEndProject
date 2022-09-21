@@ -227,9 +227,12 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
             if (id == null) return NotFound();
             Category dbCategory = await _context.Categories.FindAsync(id);
             if (dbCategory == null) return NotFound();
-            dbCategory.DeletedAt=System.DateTime.Now;
-            dbCategory.IsDeleted = true;
-            await _context.SaveChangesAsync();
+            if (dbCategory.Children!=null)
+            {
+                dbCategory.DeletedAt = System.DateTime.Now;
+                dbCategory.IsDeleted = true;
+                await _context.SaveChangesAsync();
+            }
 
             return RedirectToAction("Index");
         }

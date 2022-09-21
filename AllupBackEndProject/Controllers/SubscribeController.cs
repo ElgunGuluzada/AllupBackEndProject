@@ -50,7 +50,7 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
                 }
             }
            
-            return Ok();
+            return Ok("Abune Oldugunuz Ucun Tesekkurler Tezlikle mailler almaga davam edeceksiniz..");
         }
     }
 }

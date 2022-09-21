@@ -11,6 +11,9 @@ using Microsoft.Extensions.Configuration;
 using AllupBackEndProject.DAL;
 using System.Linq;
 using AllupBackEndProject.Services;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace AllupBackEndProject.Controllers
 {
@@ -237,6 +240,84 @@ namespace AllupBackEndProject.Controllers
             TempData["WrongPass"] = "Wrong Password";
             return View();
         }
+
+
+        //External Login (Facebook,Google)
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginVM model, string returnurl = null)
+        {
+            returnurl = returnurl ?? Url.Content("~/");
+            if (ModelState.IsValid)
+            {
+                var info = await _signInManager.GetExternalLoginInfoAsync();
+                if (info == null) return View("Error");
+                var user = new AppUser { UserName = model.Username, Email = model.Email, EmailConfirmed = true };
+                var result = await _userManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "Member");
+                    result = await _userManager.AddLoginAsync(user, info);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+                        return LocalRedirect(returnurl);
+                    }
+                }
+                ModelState.AddModelError("Email", "Email already used");
+            }
+            ViewData["ReturnUrl"] = returnurl;
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult ExternalLogin(string provider, string returnurl = null)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallBack", "Account", new { ReturnUrl = returnurl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+        [HttpGet]
+        public async Task<IActionResult> ExternalLoginCallBack(string returnurl = null, string remoteerror = null)
+        {
+            if (remoteerror != null)
+            {
+                ModelState.AddModelError(string.Empty, "Provider error");
+                return View("Login");
+            }
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null) return RedirectToAction("Login");
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+            if (result.Succeeded)
+            {
+
+                await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+                return LocalRedirect(returnurl);
+            }
+            else
+            {
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                List<AppUser> users = _userManager.Users.ToList();
+                foreach (var item in users)
+                {
+                    if (item.Email == email)
+                    {
+                        await _signInManager.SignInAsync(item, isPersistent: false);
+                        await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+                        return RedirectToAction("Index", "home");
+                    }
+                }
+                ViewData["ReturnUrl"] = returnurl;
+                ViewData["ProviderDisplayName"] = info.ProviderDisplayName;
+                return View("ExternalLoginConfirmation", new ExternalLoginVM { Email = email });
+            }
+
+        }
+
+
     }
 }
 

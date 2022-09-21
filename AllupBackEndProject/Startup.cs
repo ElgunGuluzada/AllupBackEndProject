@@ -55,6 +55,18 @@ namespace AllupBackEndProject
                 opt.Lockout.AllowedForNewUsers = true;
 
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
+            services.AddAuthentication()
+              .AddFacebook(opt =>
+              {
+                  opt.AppId = _config["Authentication:Facebook:AppId"];
+                  opt.AppSecret = _config["Authentication:Facebook:AppSecret"];
+              })
+              .AddGoogle(opt =>
+              {
+                  opt.ClientId = _config["Authentication:Google:ClientId"];
+                  opt.ClientSecret = _config["Authentication:Google:ClientSecret"];
+              });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

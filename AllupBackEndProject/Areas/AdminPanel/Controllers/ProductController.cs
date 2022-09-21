@@ -440,5 +440,17 @@ namespace AllupBackEndProject.Areas.AdminPanel.Controllers
             if (dbProduct == null) return NotFound();
             return View(dbProduct);
         }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return NotFound();
+            Product dbProduct = await _context.Products.FindAsync(id);
+            if (dbProduct == null) return NotFound();
+            dbProduct.DeletedAt = System.DateTime.Now;
+            dbProduct.IsDeleted = true;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
     }
 }

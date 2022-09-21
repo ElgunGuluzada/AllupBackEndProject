@@ -1,7 +1,12 @@
-﻿@model LoginVM
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> _signInManager
+@model LoginVM
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var schemes = await _signInManager.GetExternalAuthenticationSchemesAsync();
+    var loginproviders = schemes.ToList();
 }
 
  <!--====== Login Part Start ======-->
@@ -11,6 +16,20 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6">
                     <div class="login-register-wrapper mt-30">
+                        @if (loginproviders.Count>0)
+                            {
+                              <div class="col-lg-6 justify-content-between">
+                                  <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form">
+                                      <div class="col-12 justify-content-between">
+                                         @foreach (var item in loginproviders)
+                                             {
+                                                 <button type="submit" class="btn btn-warning" name="provider" value="@item.Name" 
+                                                 title="Login using your @item.Name" account>@item.Name</button>    
+                                             }
+                                      </div>
+                                  </form>
+                              </div>
+                            }
                         <h4 class="allup-title">Login to Your Account</h4>
                         <form method="post">
                               <div class="input-group mb-3 mt-5">
